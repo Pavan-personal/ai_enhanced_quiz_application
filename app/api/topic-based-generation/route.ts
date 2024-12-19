@@ -22,12 +22,13 @@ export async function POST(req: Request) {
 
     const topicsText = topics.join(", ");
     const questionTypeText = ` in the format of ${questionTypes}. ${
-      questionTypes.includes("mcq")
-        ? "mcqs should always be atleast 65-70% of the total questions"
+      questionTypes.includes("mcq") && questionTypes !== "mcq"
+        ? "mcqs should always be atleast 60-65% of the total questions and others shoud be random "
         : null
     }`;
-    const customCommand = `Generate ${numQuestions} questions${questionTypeText} for the topics ${topicsText} with a difficulty level of ${difficulty}. Single correct answer Format is {type: 'string', question: 'string', answer: 'exaction correct answer string', options: ['string', 'string', 'string', 'string']}. 
-    Fill in the Gap (Option-Based) Format is {type: 'string', question: 'string', answer: 'index of correct option', options: ['string', 'string', 'string', 'string']}. Assertion-Reasoning Format is {type: 'string', question: 'string', answer: 'exaction correct answer string', options: ['string', 'string', 'string', 'string'], statment: 'string', reason: 'string'}.`;
+    console.log(questionTypeText);
+    const customCommand = `Generate ${numQuestions} questions${questionTypeText} for the topics ${topicsText} with a difficulty level of ${difficulty}. Single correct answer Format is {type: 'mcq or fill-in-blank or assertion-reason t/f', question: 'string', answer: 'index of correct option', options: ['string', 'string', 'string', 'string']}. 
+    Fill in the Gap (Option-Based) Format is {type: 'string', question: 'string', answer: 'index of correct option', options: ['string', 'string', 'string', 'string']}. Assertion-Reasoning Format is {type: 'string', question: 'string', answer: 'index of correct option', options: ['string', 'string', 'string', 'string'], statment: 'string', reason: 'string'}.`;
     const contents = [{ parts: [{ text: customCommand }] }];
     // console.log(customCommand);
 
