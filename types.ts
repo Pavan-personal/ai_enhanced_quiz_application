@@ -9,12 +9,12 @@ interface Testimonial {
   quote: string;
   author: string;
   role: string;
-  gradient: string;
+  image: string;
 }
 
-interface Stats {
-  value: string;
-  label: string;
-  prefix?: string;
-  suffix?: string;
+interface PricingTier {
+  name: string;
+  price: string;
+  features: string[];
+  highlighted?: boolean;
 }

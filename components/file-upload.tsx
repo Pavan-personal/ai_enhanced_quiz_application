@@ -2,7 +2,6 @@
 import { FilePond } from "react-filepond";
 import "filepond/dist/filepond.min.css";
 import { useState } from "react";
-import { json } from "stream/consumers";
 
 export default function FileUpload() {
   const [serverResponse, setServerResponse] = useState<string>("");
@@ -41,21 +40,6 @@ export default function FileUpload() {
                 console.log(data?.formattedJson);
               };
               fetchContent();
-            }}
-            style={{
-              backgroundColor: "blue",
-              color: "white",
-              padding: "10px",
-              borderRadius: "5px",
-              cursor: "pointer",
-              border: "none",
-              margin: "10px",
-              fontSize: "16px",
-              fontWeight: "bold",
-              textTransform: "uppercase",
-              letterSpacing: "1px",
-              boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)",
-              transition: "background-color 0.3s ease",
             }}
           >
             Ask AI
