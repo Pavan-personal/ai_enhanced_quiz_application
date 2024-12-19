@@ -22,7 +22,7 @@ export async function POST(req: Request) {
 
     const topicsText = topics.join(", ");
     const QuestionLength = ` the length of the question should be ${questionLength}`;
-    const prompt = `${command}: Generate ${numberOfQuestions} questions on the topics: ${topicsText} with a difficulty level of ${difficulty} ${QuestionLength}. Return the output as a JSON array of objects in the format: {question: 'string', answer: 'index of correct option', options: ['string', 'string', 'string', 'string']}.`;
+    const prompt = `${command}: Generate ${numberOfQuestions} questions on the topics: ${topicsText} with a difficulty level of ${difficulty} ${QuestionLength}. Return the output as a JSON array of objects in the format: {question: 'string', answer: 'exact option string', options: ['string', 'string', 'string', 'string']}.`;
 
     const contents = [{ parts: [{ text: prompt }] }];
 

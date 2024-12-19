@@ -30,7 +30,7 @@ export async function POST(req: Request) {
       {
         parts: [
           {
-            text: `${customCommand} Description: ${description} option format is 'index of correct option'.`,
+            text: `${customCommand} Description: ${description} option format is 'exact correct option string'.`,
           },
         ],
       },
