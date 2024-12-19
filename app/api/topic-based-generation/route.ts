@@ -6,8 +6,8 @@ export async function POST(req: Request) {
       command,
       topics,
       difficulty,
-      numberOfQuestions,
-      questionLength = "short",
+      numQuestions,
+      questionTypes = "mcq",
     } = await req.json();
 
     if (!command || !topics || !Array.isArray(topics)) {
@@ -21,10 +21,15 @@ export async function POST(req: Request) {
     }
 
     const topicsText = topics.join(", ");
-    const QuestionLength = ` the length of the question should be ${questionLength}`;
-    const prompt = `${command}: Generate ${numberOfQuestions} questions on the topics: ${topicsText} with a difficulty level of ${difficulty} ${QuestionLength}. Return the output as a JSON array of objects in the format: {question: 'string', answer: 'exact option string', options: ['string', 'string', 'string', 'string']}.`;
-
-    const contents = [{ parts: [{ text: prompt }] }];
+    const questionTypeText = ` in the format of ${questionTypes}. ${
+      questionTypes.includes("mcq")
+        ? "mcqs should always be atleast 65-70% of the total questions"
+        : null
+    }`;
+    const customCommand = `Generate ${numQuestions} questions${questionTypeText} for the topics ${topicsText} with a difficulty level of ${difficulty}. Single correct answer Format is {type: 'string', question: 'string', answer: 'exaction correct answer string', options: ['string', 'string', 'string', 'string']}. 
+    Fill in the Gap (Option-Based) Format is {type: 'string', question: 'string', answer: 'index of correct option', options: ['string', 'string', 'string', 'string']}. Assertion-Reasoning Format is {type: 'string', question: 'string', answer: 'exaction correct answer string', options: ['string', 'string', 'string', 'string'], statment: 'string', reason: 'string'}.`;
+    const contents = [{ parts: [{ text: customCommand }] }];
+    // console.log(customCommand);
 
     const API_KEY = process.env.GEMINI_API_KEY;
     if (!API_KEY) {

@@ -8,7 +8,6 @@ export async function POST(req: Request) {
       difficulty = "medium",
       numberOfQuestions = 10,
       questionType = "mcq",
-      questionLength = "short",
     } = await req.json();
 
     if (!command || !description) {
@@ -23,14 +22,13 @@ export async function POST(req: Request) {
 
     const difficultyText = ` with a difficulty level of ${difficulty}`;
     const questionTypeText = ` in the format of ${questionType}`;
-    const QuestionLength = ` the length of the question should be ${questionLength}`;
-    const customCommand = `${command}: Generate ${numberOfQuestions} questions${difficultyText}${questionTypeText} and ${QuestionLength}.`;
+    const customCommand = `${command}: Generate ${numberOfQuestions} questions${difficultyText}${questionTypeText}.`;
 
     const contents = [
       {
         parts: [
           {
-            text: `${customCommand} Description: ${description} option format is 'exact correct option string'.`,
+            text: `${customCommand} Description: ${description} option format is 'index of correct option'.`,
           },
         ],
       },

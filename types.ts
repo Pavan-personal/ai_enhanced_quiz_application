@@ -18,3 +18,9 @@ interface PricingTier {
   features: string[];
   highlighted?: boolean;
 }
+
+interface Settings {
+  numQuestions: number;
+  questionType: string;
+  difficulty: string;
+}
