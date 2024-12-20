@@ -27,7 +27,7 @@ export async function GET(req: Request) {
       );
     }
 
-    const customCommand = `Generate 10 questions for the context: ${context}. difficulty level should be mixed of all levels. and i want random number of questions from each level. Single correct answer Format is {type: 'mcq or fill-in-blank or assertion-reason t/f', question: 'string', answer: 'index of correct option', options: ['string', 'string', 'string', 'string']}. Fill in the Gap (Option-Based) Format is {type: 'string', question: 'string', answer: 'index of correct option', options: ['string', 'string', 'string', 'string']}. Assertion-Reasoning Format is {type: 'string', question: 'string', answer: 'index of correct option', options: ['string', 'string', 'string', 'string'], statment: 'string', reason: 'string'}.`;
+    const customCommand = `Generate 10 questions for the context: ${context}. difficulty level should be mixed of all levels. and i want random number of questions from each level. Single correct answer Format is {type: 'mcq or fill-in-blank or assertion-reason t/f', question: 'string', answer: 'index of correct option', options: ['string', 'string', 'string', 'string']}. Fill in the Gap (Option-Based) Format is {type: 'string', question: 'string', answer: 'index of correct option', options: ['string', 'string', 'string', 'string']}. Assertion-Reasoning Format is {type: 'string', question: 'string', answer: 'index of correct option', options: ['string', 'string', 'string', 'string'], statment: 'string', reason: 'string'}. also give random correct options`;
 
     const response = await fetch(
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${process.env.GEMINI_API_KEY}`,

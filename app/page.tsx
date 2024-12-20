@@ -244,27 +244,6 @@ const LandingPage: React.FC = () => {
           ))}
         </div>
 
-        {/* Interactive Demo */}
-        <div className="max-w-3xl mx-auto mb-20">
-          <h2 className="text-4xl font-bold text-center mb-8">Try It Now</h2>
-          <div className="bg-gray-900 rounded-xl p-6">
-            <textarea
-              value={demoText}
-              onChange={(e) => setDemoText(e.target.value)}
-              className="w-full h-32 bg-gray-800 rounded-lg p-4 text-white mb-4"
-              placeholder="Paste your content or enter a topic..."
-            />
-            <motion.button
-              className="w-full py-3 rounded-lg bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={() => setIsGenerating(true)}
-            >
-              {isGenerating ? 'Generating...' : 'Generate Questions'}
-            </motion.button>
-          </div>
-        </div>
-
         {/* Stats */}
         {/* <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-20">
           {stats.map((stat, index) => (

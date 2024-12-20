@@ -124,7 +124,7 @@ const QuizDialog = () => {
           <textarea
             value={demoText}
             onChange={(e) => setDemoText(e.target.value)}
-            className="w-full h-32 bg-gray-800 rounded-lg p-4 text-black mb-4"
+            className="w-full h-32 bg-gray-800 rounded-lg p-4 mb-4"
             placeholder="Paste your content or enter a topic..."
           />
           <motion.button
@@ -257,7 +257,7 @@ const QuizDialog = () => {
                 <div className="w-20 h-20 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Check className="w-10 h-10 text-black" />
                 </div>
-                <h3 className="text-2xl font-bold mb-2">Quiz Complete!</h3>
+                <h3 className="text-2xl font-bold text-black mb-2">Quiz Complete!</h3>
                 <p className="text-gray-600">
                   You scored {calculateScore()} out of {questions.length}
                 </p>
