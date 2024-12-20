@@ -1,19 +1,19 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 // import { Progress } from "@/components/ui/progress";
 // import { Card, CardContent } from "@/components/ui/card";
 import { Check, X, AlertTriangle, Lock } from "lucide-react";
-import { Card, CardContent } from '@mui/material';
+import { Card, CardContent } from "@mui/material";
 
 const QuizDialog = () => {
-  const [demoText, setDemoText] = useState('');
+  const [demoText, setDemoText] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   interface Question {
     question: string;
     options: string[];
     answer: number;
   }
-  
+
   const [questions, setQuestions] = useState<Question[]>([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState<(number | null)[]>([]);
@@ -24,15 +24,17 @@ const QuizDialog = () => {
   const handleGenerate = async () => {
     setIsGenerating(true);
     try {
-      const response = await fetch(`/api/trail?context=${encodeURIComponent(demoText)}`);
+      const response = await fetch(
+        `/api/trail?context=${encodeURIComponent(demoText)}`
+      );
       const data = await response.json();
-      
+
       if (data.error) {
         setError(data);
         setIsGenerating(false);
         return;
       }
-      
+
       if (data.questions) {
         setQuestions(data.questions);
         setShowQuiz(true);
@@ -45,9 +47,7 @@ const QuizDialog = () => {
     }
   };
 
-  const handleAnswerSelect = (index: number
-
-  ) => {
+  const handleAnswerSelect = (index: number) => {
     const newAnswers = [...selectedAnswers];
     newAnswers[currentQuestion] = index;
     setSelectedAnswers(newAnswers);
@@ -55,7 +55,7 @@ const QuizDialog = () => {
 
   const handleNext = () => {
     if (currentQuestion < questions.length - 1) {
-      setCurrentQuestion(prev => prev + 1);
+      setCurrentQuestion((prev) => prev + 1);
     } else {
       setShowResults(true);
     }
@@ -77,13 +77,14 @@ const QuizDialog = () => {
     >
       <Card className="max-w-md w-full bg-white">
         <CardContent className="p-6">
-          <div className="flex flex-col items-center text-center">
+          <div className="flex flex-col items-center">
             <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mb-4">
               <Lock className="w-8 h-8 text-yellow-600" />
             </div>
             <h3 className="text-xl font-bold mb-2">Rate Limit Exceeded</h3>
             <p className="text-gray-600 mb-6">
-              Upgrade your plan to generate unlimited questions and access premium features.
+              Upgrade your plan to generate unlimited questions and access
+              premium features.
             </p>
             <div className="space-x-4">
               <motion.button
@@ -132,7 +133,7 @@ const QuizDialog = () => {
             whileTap={{ scale: 0.98 }}
             onClick={handleGenerate}
           >
-            {isGenerating ? 'Generating...' : 'Generate Questions'}
+            {isGenerating ? "Generating..." : "Generate Questions"}
           </motion.button>
         </div>
       </div>
@@ -152,17 +153,13 @@ const QuizDialog = () => {
               className="bg-white rounded-xl max-w-2xl w-full p-6"
             >
               <div className="mb-6">
-                <progress
-                  value={(currentQuestion + 1) / questions.length * 100} 
-                  className="h-2"
-                />
                 <p className="text-sm text-gray-600 mt-2">
                   Question {currentQuestion + 1} of {questions.length}
                 </p>
               </div>
 
               <div className="mb-8">
-                <h3 className="text-xl font-semibold mb-4">
+                <h3 className="text-xl text-left font-semibold mb-4">
                   {questions[currentQuestion].question}
                 </h3>
                 <div className="space-y-3">
@@ -170,20 +167,25 @@ const QuizDialog = () => {
                     <motion.button
                       key={index}
                       className={`w-full p-4 rounded-lg border-2 transition-all flex items-center space-x-3
-                        ${selectedAnswers[currentQuestion] === index 
-                          ? 'border-purple-500 bg-purple-50' 
-                          : 'border-gray-200 hover:border-purple-200'}`}
+                        ${
+                          selectedAnswers[currentQuestion] === index
+                            ? "border-black bg-slate-50"
+                            : "border-gray-200 hover:border-purple-200"
+                        }`}
                       whileHover={{ scale: 1.01 }}
                       whileTap={{ scale: 0.99 }}
                       onClick={() => handleAnswerSelect(index)}
                     >
-                      <div className={`w-6 h-6 rounded-full flex items-center justify-center
-                        ${selectedAnswers[currentQuestion] === index 
-                          ? 'bg-purple-500' 
-                          : 'bg-gray-100'}`}
+                      <div
+                        className={`w-6 h-6 rounded-full flex items-center justify-center
+                        ${
+                          selectedAnswers[currentQuestion] === index
+                            ? "bg-black text-white"
+                            : "bg-gray-100"
+                        }`}
                       >
                         {selectedAnswers[currentQuestion] === index && (
-                          <Check className="w-4 h-4 text-black" />
+                          <Check className="w-4 h-4 text-white" />
                         )}
                       </div>
                       <span>{option}</span>
@@ -192,18 +194,39 @@ const QuizDialog = () => {
                 </div>
               </div>
 
-              <div className="flex justify-end">
+              <div className="flex justify-between">
+                {/* want for previous button also */}
+                <motion.button
+                className={`px-6 py-2 rounded-lg text-black
+                    ${
+                      currentQuestion === 0
+                        ? "bg-gray-400"
+                        : "bg-black"
+                    } text-white`}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => setCurrentQuestion((prev) => prev - 1)}
+                  disabled={currentQuestion === 0}
+                >
+                  Previous
+                </motion.button>
                 <motion.button
                   className={`px-6 py-2 rounded-lg text-black
-                    ${selectedAnswers[currentQuestion] === null 
-                      ? 'bg-gray-400' 
-                      : 'bg-purple-600 hover:bg-purple-700'}`}
-                  whileHover={selectedAnswers[currentQuestion] !== null ? { scale: 1.05 } : {}}
-                  whileTap={selectedAnswers[currentQuestion] !== null ? { scale: 0.95 } : {}}
+                    ${
+                      selectedAnswers[currentQuestion] === null
+                        ? "bg-gray-400"
+                        : "bg-black"
+                    } text-white`}
+                  whileTap={
+                    selectedAnswers[currentQuestion] !== null
+                      ? { scale: 0.95 }
+                      : {}
+                  }
                   onClick={handleNext}
                   disabled={selectedAnswers[currentQuestion] === null}
                 >
-                  {currentQuestion < questions.length - 1 ? 'Next' : 'Show Results'}
+                  {currentQuestion < questions.length - 1
+                    ? "Next"
+                    : "Show Results"}
                 </motion.button>
               </div>
             </motion.div>
@@ -228,11 +251,11 @@ const QuizDialog = () => {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
               className="bg-white rounded-xl max-w-md w-full p-8 text-center"
-              onClick={e => e.stopPropagation()}
+              onClick={(e) => e.stopPropagation()}
             >
               <div className="mb-6">
                 <div className="w-20 h-20 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Check className="w-10 h-10 text-purple-600" />
+                  <Check className="w-10 h-10 text-black" />
                 </div>
                 <h3 className="text-2xl font-bold mb-2">Quiz Complete!</h3>
                 <p className="text-gray-600">
@@ -241,19 +264,6 @@ const QuizDialog = () => {
               </div>
 
               <div className="space-y-4">
-                <motion.button
-                  className="w-full px-6 py-3 bg-purple-600 text-black rounded-lg"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => {
-                    setShowResults(false);
-                    setShowQuiz(false);
-                    setCurrentQuestion(0);
-                    setSelectedAnswers([]);
-                  }}
-                >
-                  Try Another Topic
-                </motion.button>
                 <p className="text-sm text-gray-500">Click anywhere to close</p>
               </div>
             </motion.div>
