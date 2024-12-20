@@ -8,7 +8,7 @@ const redis = new Redis({
 
 export const rateLimiter = new Ratelimit({
   redis,
-  limiter: Ratelimit.fixedWindow(2, '24 h'),
+  limiter: Ratelimit.fixedWindow(2, '2m'),
   prefix: 'questions-api',
 })
 
