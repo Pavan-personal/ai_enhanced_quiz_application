@@ -370,7 +370,7 @@ const LandingPage: React.FC = () => {
             },
             {
               question: "What file formats are supported for upload?",
-              answer: "We currently support PDF, Word documents, and plain text files. More formats are being added regularly."
+              answer: "We currently support PDF documents. More formats will be added soon."
             }
           ].map((faq, index) => (
             <motion.div

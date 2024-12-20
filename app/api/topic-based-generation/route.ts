@@ -27,10 +27,13 @@ export async function POST(req: Request) {
         : null
     }`;
     console.log(questionTypeText);
-    const customCommand = `Generate ${numQuestions} questions${questionTypeText} for the topics ${topicsText} with a difficulty level of ${difficulty}. Single correct answer Format is {type: 'mcq or fill-in-blank or assertion-reason t/f', question: 'string', answer: 'index of correct option', options: ['string', 'string', 'string', 'string']}. 
+    const customCommand = `Generate ${numQuestions} questions${questionTypeText} for the topics ${topicsText} with a difficulty level of ${
+      difficulty === "mixed"
+        ? "cover all kind of difficluty types includeing miscellaneous"
+        : difficulty
+    }. Single correct answer Format is {type: 'mcq or fill-in-blank or assertion-reason t/f', question: 'string', answer: 'index of correct option', options: ['string', 'string', 'string', 'string']}. 
     Fill in the Gap (Option-Based) Format is {type: 'string', question: 'string', answer: 'index of correct option', options: ['string', 'string', 'string', 'string']}. Assertion-Reasoning Format is {type: 'string', question: 'string', answer: 'index of correct option', options: ['string', 'string', 'string', 'string'], statment: 'string', reason: 'string'}.`;
     const contents = [{ parts: [{ text: customCommand }] }];
-    // console.log(customCommand);
 
     const API_KEY = process.env.GEMINI_API_KEY;
     if (!API_KEY) {

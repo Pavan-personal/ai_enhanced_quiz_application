@@ -954,18 +954,18 @@ import "filepond/dist/filepond.min.css";
 
 // import React, { useState, useEffect } from 'react';
 // import { motion, AnimatePresence } from 'framer-motion';
-import {
-  FormControl,
-  FormLabel,
-  // FormGroup,
-  FormControlLabel,
-  // Checkbox,
-  // Select,
-  // MenuItem,
-  Paper,
-  Typography,
-  Chip,
-} from "@mui/material";
+// import {
+//   FormControl,
+//   FormLabel,
+//   // FormGroup,
+//   FormControlLabel,
+//   // Checkbox,
+//   // Select,
+//   // MenuItem,
+//   Paper,
+//   Typography,
+//   Chip,
+// } from "@mui/material";
 // import { Settings, Brain, Target, ChevronDown } from 'lucide-react';
 
 const QUESTION_TYPE_OPTIONS = [
@@ -974,6 +974,188 @@ const QUESTION_TYPE_OPTIONS = [
   { id: "assertion-reason", label: "Assertion Reason", color: "#ff9800" },
   { id: "true-false", label: "True/False", color: "#9c27b0" },
 ];
+
+// const CustomizationPanel = ({
+//   settings,
+//   setSettings,
+//   isOpen,
+//   setIsOpen,
+// }: {
+//   settings: Settings;
+//   setSettings: React.Dispatch<React.SetStateAction<Settings>>;
+//   isOpen: boolean;
+//   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+// }) => {
+//   const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
+
+//   useEffect(() => {
+//     if (selectedTypes.length > 0) {
+//       setSettings((prev) => ({
+//         ...prev,
+//         questionTypes: selectedTypes.join(","),
+//       }));
+//     } else {
+//       setSettings((prev) => ({
+//         ...prev,
+//         questionTypes: "mcq",
+//       }));
+//     }
+//   }, [selectedTypes, setSettings]);
+
+//   useEffect(() => {
+//     if (settings.questionType) {
+//       setSelectedTypes(settings.questionType.split(","));
+//     }
+//   }, [settings.questionType]);
+
+//   const handleTypeToggle = (typeId: string) => {
+//     setSelectedTypes((prev) => {
+//       if (prev.includes(typeId)) {
+//         return prev.filter((t) => t !== typeId);
+//       }
+//       return [...prev, typeId];
+//     });
+//   };
+
+//   return (
+//     <motion.div className="w-full space-y-6">
+//       <Paper
+//         elevation={0}
+//         className="w-full rounded-xl overflow-hidden bg-slate-50"
+//       >
+//         <motion.button
+//           onClick={() => setIsOpen(!isOpen)}
+//           className="w-full flex items-center justify-between p-4"
+//         >
+//           <div className="flex items-center space-x-2">
+//             <Settings className="w-5 h-5" />
+//             <Typography>Customizations</Typography>
+//           </div>
+//           <motion.div
+//             animate={{ rotate: isOpen ? 180 : 0 }}
+//             transition={{ duration: 0.2 }}
+//           >
+//             <ChevronDown className="w-5 h-5" />
+//           </motion.div>
+//         </motion.button>
+
+//         <AnimatePresence>
+//           {isOpen && (
+//             <motion.div
+//               initial={{ height: 0, opacity: 0 }}
+//               animate={{ height: "auto", opacity: 1 }}
+//               exit={{ height: 0, opacity: 0 }}
+//               className="p-6 space-y-8 overflow-hidden"
+//             >
+//               <div className="grid grid-cols-2 gap-6">
+//                 <FormControl fullWidth>
+//                   <div className="flex items-center space-x-2 mb-3">
+//                     <Brain className="w-4 h-4" style={{ color: "#3b82f6" }} />
+//                     <Typography>Difficulty Level</Typography>
+//                   </div>
+//                   <Select
+//                     value={settings.difficulty}
+//                     onChange={(e) =>
+//                       setSettings({
+//                         ...settings,
+//                         difficulty: e.target.value as string,
+//                       })
+//                     }
+//                     variant="outlined"
+//                   >
+//                     <MenuItem value="easy">Easy</MenuItem>
+//                     <MenuItem value="medium">Medium</MenuItem>
+//                     <MenuItem value="hard">Hard</MenuItem>
+//                     <MenuItem value="miscellaneous">Miscellaneous</MenuItem>
+//                   </Select>
+//                 </FormControl>
+
+//                 <FormControl fullWidth>
+//                   <div className="flex items-center space-x-2 mb-3">
+//                     <Target className="w-4 h-4" style={{ color: "#10b981" }} />
+//                     <Typography>Number of Questions</Typography>
+//                   </div>
+//                   <Select
+//                     value={settings.numQuestions}
+//                     onChange={(e) =>
+//                       setSettings({
+//                         ...settings,
+//                         numQuestions: parseInt(e.target.value as string),
+//                       })
+//                     }
+//                     variant="outlined"
+//                   >
+//                     <MenuItem value={5}>5</MenuItem>
+//                     <MenuItem value={10}>10</MenuItem>
+//                     <MenuItem value={15}>15</MenuItem>
+//                     <MenuItem value={20}>20</MenuItem>
+//                     <MenuItem value={30}>30</MenuItem>
+//                   </Select>
+//                 </FormControl>
+//               </div>
+
+//               <FormControl component="fieldset" className="w-full">
+//                 <div className="flex items-center space-x-2 mb-3">
+//                   <NotebookPen className="w-4 h-4" style={{ color: "#" }} />
+//                   <Typography>Number of Questions</Typography>
+//                 </div>
+//                 <div className="grid grid-cols-2 gap-2">
+//                   {QUESTION_TYPE_OPTIONS.map((type) => (
+//                     <FormControlLabel
+//                       key={type.id}
+//                       control={
+//                         <Checkbox
+//                           checked={selectedTypes.includes(type.id)}
+//                           onChange={() => handleTypeToggle(type.id)}
+//                           sx={{
+//                             "&.Mui-checked": {
+//                               color: "black",
+//                             },
+//                           }}
+//                         />
+//                       }
+//                       label={
+//                         <div className="flex items-center space-x-2">
+//                           <Typography>{type.label}</Typography>
+//                           {selectedTypes.includes(type.id) && (
+//                             <Chip
+//                               size="small"
+//                               label="Selected"
+//                               sx={{
+//                                 backgroundColor: "black",
+//                                 color: "white",
+//                                 fontSize: "0.7rem",
+//                               }}
+//                             />
+//                           )}
+//                         </div>
+//                       }
+//                     />
+//                   ))}
+//                 </div>
+//               </FormControl>
+//             </motion.div>
+//           )}
+//         </AnimatePresence>
+//       </Paper>
+//     </motion.div>
+//   );
+// };
+
+// import React, { useState, useEffect } from 'react';
+import {
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  Typography,
+  FormControl,
+  // Select,
+  // MenuItem,
+  FormControlLabel,
+  // Checkbox,
+  Chip,
+} from "@mui/material";
+// import { Settings, ChevronDown, Brain, Target, NotebookPen } from 'lucide-react';
 
 const CustomizationPanel = ({
   settings,
@@ -997,7 +1179,7 @@ const CustomizationPanel = ({
     } else {
       setSettings((prev) => ({
         ...prev,
-        questionTypes: "mcq", // Default to MCQ if nothing selected
+        questionTypes: "mcq",
       }));
     }
   }, [selectedTypes, setSettings]);
@@ -1017,128 +1199,135 @@ const CustomizationPanel = ({
     });
   };
 
+  const handleAccordionChange = (
+    event: React.SyntheticEvent,
+    newExpanded: boolean
+  ) => {
+    setIsOpen(newExpanded);
+  };
+
   return (
-    <motion.div className="w-full space-y-6">
-      <Paper
-        elevation={0}
-        className="w-full rounded-xl overflow-hidden bg-slate-50"
+    <div className="w-full space-y-6">
+      <Accordion
+        expanded={isOpen}
+        onChange={handleAccordionChange}
+        sx={{
+          backgroundColor: "#f8fafc",
+          borderRadius: "0.75rem",
+          "&:before": {
+            display: "none",
+          },
+          boxShadow: "none",
+        }}
       >
-        <motion.button
-          onClick={() => setIsOpen(!isOpen)}
-          className="w-full flex items-center justify-between p-4"
+        <AccordionSummary
+          expandIcon={<ChevronDown className="w-5 h-5" />}
+          sx={{
+            padding: "1rem",
+            "& .MuiAccordionSummary-content": {
+              margin: 0,
+            },
+          }}
         >
           <div className="flex items-center space-x-2">
             <Settings className="w-5 h-5" />
             <Typography>Customizations</Typography>
           </div>
-          <motion.div
-            animate={{ rotate: isOpen ? 180 : 0 }}
-            transition={{ duration: 0.2 }}
-          >
-            <ChevronDown className="w-5 h-5" />
-          </motion.div>
-        </motion.button>
+        </AccordionSummary>
 
-        <AnimatePresence>
-          {isOpen && (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: "auto", opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              className="p-6 space-y-8 overflow-hidden"
-            >
-              <div className="grid grid-cols-2 gap-6">
-                <FormControl fullWidth>
-                  <div className="flex items-center space-x-2 mb-3">
-                    <Brain className="w-4 h-4" style={{ color: "#3b82f6" }} />
-                    <Typography>Difficulty Level</Typography>
-                  </div>
-                  <Select
-                    value={settings.difficulty}
-                    onChange={(e) =>
-                      setSettings({
-                        ...settings,
-                        difficulty: e.target.value as string,
-                      })
-                    }
-                    variant="outlined"
-                  >
-                    <MenuItem value="easy">Easy</MenuItem>
-                    <MenuItem value="medium">Medium</MenuItem>
-                    <MenuItem value="hard">Hard</MenuItem>
-                    <MenuItem value="miscellaneous">Miscellaneous</MenuItem>
-                  </Select>
-                </FormControl>
-
-                <FormControl fullWidth>
-                  <div className="flex items-center space-x-2 mb-3">
-                    <Target className="w-4 h-4" style={{ color: "#10b981" }} />
-                    <Typography>Number of Questions</Typography>
-                  </div>
-                  <Select
-                    value={settings.numQuestions}
-                    onChange={(e) =>
-                      setSettings({
-                        ...settings,
-                        numQuestions: parseInt(e.target.value as string),
-                      })
-                    }
-                    variant="outlined"
-                  >
-                    <MenuItem value={5}>5</MenuItem>
-                    <MenuItem value={10}>10</MenuItem>
-                    <MenuItem value={15}>15</MenuItem>
-                    <MenuItem value={20}>20</MenuItem>
-                    <MenuItem value={30}>30</MenuItem>
-                  </Select>
-                </FormControl>
-              </div>
-
-              <FormControl component="fieldset" className="w-full">
+        <AccordionDetails sx={{ padding: "1.5rem", paddingTop: 0 }}>
+          <div className="space-y-8">
+            <div className="grid grid-cols-2 gap-6">
+              <FormControl fullWidth>
                 <div className="flex items-center space-x-2 mb-3">
-                  <NotebookPen className="w-4 h-4" style={{ color: "#" }} />
+                  <Brain className="w-4 h-4" style={{ color: "#3b82f6" }} />
+                  <Typography>Difficulty Level</Typography>
+                </div>
+                <Select
+                  value={settings.difficulty}
+                  onChange={(e) =>
+                    setSettings({
+                      ...settings,
+                      difficulty: e.target.value as string,
+                    })
+                  }
+                  variant="outlined"
+                >
+                  <MenuItem value="easy">Easy</MenuItem>
+                  <MenuItem value="medium">Medium</MenuItem>
+                  <MenuItem value="hard">Hard</MenuItem>
+                  <MenuItem value="mixed">Mixed</MenuItem>
+                </Select>
+              </FormControl>
+
+              <FormControl fullWidth>
+                <div className="flex items-center space-x-2 mb-3">
+                  <Target className="w-4 h-4" style={{ color: "#10b981" }} />
                   <Typography>Number of Questions</Typography>
                 </div>
-                <div className="grid grid-cols-2 gap-2">
-                  {QUESTION_TYPE_OPTIONS.map((type) => (
-                    <FormControlLabel
-                      key={type.id}
-                      control={
-                        <Checkbox
-                          checked={selectedTypes.includes(type.id)}
-                          onChange={() => handleTypeToggle(type.id)}
-                          sx={{
-                            "&.Mui-checked": {
-                              color: "black",
-                            },
-                          }}
-                        />
-                      }
-                      label={
-                        <div className="flex items-center space-x-2">
-                          <Typography>{type.label}</Typography>
-                          {selectedTypes.includes(type.id) && (
-                            <Chip
-                              size="small"
-                              label="Selected"
-                              sx={{
-                                backgroundColor: "black",
-                                color: "white",
-                                fontSize: "0.7rem",
-                              }}
-                            />
-                          )}
-                        </div>
-                      }
-                    />
-                  ))}
-                </div>
+                <Select
+                  value={settings.numQuestions}
+                  onChange={(e) =>
+                    setSettings({
+                      ...settings,
+                      numQuestions: parseInt(e.target.value as string),
+                    })
+                  }
+                  variant="outlined"
+                >
+                  <MenuItem value={5}>5</MenuItem>
+                  <MenuItem value={10}>10</MenuItem>
+                  <MenuItem value={15}>15</MenuItem>
+                  <MenuItem value={20}>20</MenuItem>
+                  <MenuItem value={30}>30</MenuItem>
+                </Select>
               </FormControl>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </Paper>
-    </motion.div>
+            </div>
+
+            <FormControl component="fieldset" className="w-full">
+              <div className="flex items-center space-x-2 mb-3">
+                <NotebookPen className="w-4 h-4" style={{ color: "#" }} />
+                <Typography>Question Types</Typography>
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                {QUESTION_TYPE_OPTIONS.map((type) => (
+                  <FormControlLabel
+                    key={type.id}
+                    control={
+                      <Checkbox
+                        checked={selectedTypes.includes(type.id)}
+                        onChange={() => handleTypeToggle(type.id)}
+                        sx={{
+                          "&.Mui-checked": {
+                            color: "black",
+                          },
+                        }}
+                      />
+                    }
+                    label={
+                      <div className="flex items-center space-x-2">
+                        <Typography>{type.label}</Typography>
+                        {selectedTypes.includes(type.id) && (
+                          <Chip
+                            size="small"
+                            label="Selected"
+                            sx={{
+                              backgroundColor: "black",
+                              color: "white",
+                              fontSize: "0.7rem",
+                            }}
+                          />
+                        )}
+                      </div>
+                    }
+                  />
+                ))}
+              </div>
+            </FormControl>
+          </div>
+        </AccordionDetails>
+      </Accordion>
+    </div>
   );
 };
 
