@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useSpring } from 'framer-motion';
 import { Brain, FileText, Settings, Sparkles, ArrowRight, Book, Target, Zap, Users, Globe, Lightbulb, Cpu } from 'lucide-react';
+import QuizDialog from '@/components/trail';
 
 const LandingPage: React.FC = () => {
   // Sample Data
@@ -265,7 +266,7 @@ const LandingPage: React.FC = () => {
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-20">
+        {/* <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-20">
           {stats.map((stat, index) => (
             <motion.div
               key={index}
@@ -281,7 +282,9 @@ const LandingPage: React.FC = () => {
               <div className="text-gray-400 mt-2">{stat.label}</div>
             </motion.div>
           ))}
-        </div>
+        </div> */}
+
+        <QuizDialog />
 
         {/* Pricing */}
         <div className="mb-20">
