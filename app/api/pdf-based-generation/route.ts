@@ -2,13 +2,7 @@ import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   try {
-    const {
-      command,
-      description,
-      difficulty = "medium",
-      numberOfQuestions = 10,
-      questionType = "mcq",
-    } = await req.json();
+    const { command, description } = await req.json();
 
     if (!command || !description) {
       return NextResponse.json(
@@ -20,15 +14,11 @@ export async function POST(req: Request) {
       );
     }
 
-    const difficultyText = ` with a difficulty level of ${difficulty}`;
-    const questionTypeText = ` in the format of ${questionType}`;
-    const customCommand = `${command}: Generate ${numberOfQuestions} questions${difficultyText}${questionTypeText}.`;
-
     const contents = [
       {
         parts: [
           {
-            text: `${customCommand} Description: ${description} option format is 'index of correct option'.`,
+            text: `${command} Description: ${description} option format is 'index of correct option'.`,
           },
         ],
       },
@@ -80,7 +70,7 @@ export async function POST(req: Request) {
       );
     }
 
-    return NextResponse.json({ formattedJson });
+    return NextResponse.json({ data: formattedJson });
   } catch (error: any) {
     console.error("Error handling request:", error);
     return NextResponse.json(

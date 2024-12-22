@@ -191,7 +191,7 @@ const QuizDialog = () => {
               <motion.button
                 className="px-6 py-2 bg-black duration-150 border-black border text-white rounded-lg"
                 whileHover={{ background: "white", color: "black" }}
-                whileTap={{ scale: 0.95 }}
+                whileTap={{ scale: 0.5 }}
                 onClick={(e) => {
                   e.stopPropagation();
                   // Add your upgrade navigation logic here
@@ -391,7 +391,7 @@ const QuizDialog = () => {
                 <h3 className="text-2xl font-bold text-black mb-2">
                   Quiz Complete!
                 </h3>
-                <p className="text-gray-600">
+                <p className="text-gray-600 text-lg font-semibold text-center">
                   You scored {calculateScore()} out of {questions.length}
                 </p>
               </div>
