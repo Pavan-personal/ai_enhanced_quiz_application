@@ -309,7 +309,6 @@
 
 // export default QuizDialog;
 
-
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Check, Lock } from "lucide-react";
@@ -336,7 +335,7 @@ const LoadingAnimation = () => {
             cy="60"
             r="50"
             fill="none"
-            stroke="#4F46E5"
+            stroke="black"
             strokeWidth="4"
             initial={{ pathLength: 0 }}
             animate={{
@@ -354,7 +353,7 @@ const LoadingAnimation = () => {
             cx="40"
             cy="50"
             r="5"
-            fill="#4F46E5"
+            fill="black"
             initial={{ scale: 0 }}
             animate={{ scale: [0, 1, 1, 0] }}
             transition={{
@@ -367,7 +366,7 @@ const LoadingAnimation = () => {
             cx="80"
             cy="50"
             r="5"
-            fill="#4F46E5"
+            fill="black"
             initial={{ scale: 0 }}
             animate={{ scale: [0, 1, 1, 0] }}
             transition={{
@@ -381,7 +380,7 @@ const LoadingAnimation = () => {
           <motion.path
             d="M40 70 Q60 90 80 70"
             fill="none"
-            stroke="#4F46E5"
+            stroke="black"
             strokeWidth="4"
             strokeLinecap="round"
             initial={{ pathLength: 0 }}
@@ -395,7 +394,7 @@ const LoadingAnimation = () => {
           />
         </svg>
         <motion.p
-          className="mt-4 text-lg font-semibold text-indigo-600"
+          className="mt-4 text-lg font-semibold text-black"
           initial={{ opacity: 0 }}
           animate={{ opacity: [0, 1, 1, 0] }}
           transition={{
@@ -430,6 +429,10 @@ const QuizDialog = () => {
   const handleGenerate = async () => {
     setIsGenerating(true);
     try {
+      if (demoText.trim() === "") {
+        setError({ error: "Please enter some text to generate questions." });
+        return;
+      }
       const response = await fetch(
         `/api/trail?context=${encodeURIComponent(demoText)}`
       );
@@ -693,8 +696,8 @@ const QuizDialog = () => {
               onClick={(e) => e.stopPropagation()}
             >
               <div className="mb-6">
-                <div className="w-20 h-20 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Check className="w-10 h-10 text-black" />
+                <div className="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Check className="w-10 h-10 text-white" />
                 </div>
                 <h3 className="text-2xl font-bold text-black mb-2">
                   Quiz Complete!
@@ -710,11 +713,86 @@ const QuizDialog = () => {
             </motion.div>
           </motion.div>
         )}
-        {error && renderRateLimitError()}{" "}
+        {error?.error === "Rate limit exceeded. Please register to continue." &&
+          renderRateLimitError()}{" "}
+        {/* {error?.error === "Please enter some text to generate questions." && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50"
+          >
+            <motion.div
+              initial={{ y: 50, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: 50, opacity: 0 }}
+              className="bg-white rounded-xl max-w-2xl w-full p-6"
+            >
+              <div className="mb-6">
+                <p className="text-sm text-gray-600 mt-2">
+                  Please enter some text to generate questions.
+                </p>
+              </div>
+            </motion.div>
+          </motion.div>
+        )} */}
+        {error?.error === "Please enter some text to generate questions." && (
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    exit={{ opacity: 0 }}
+    className="fixed inset-0 bg-gradient-to-b from-black/60 to-black/30 flex items-center justify-center p-4 z-50 backdrop-blur-sm"
+  >
+    <motion.div
+      initial={{ y: 50, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      exit={{ y: 50, opacity: 0 }}
+      className="bg-gradient-to-b from-white to-gray-100 shadow-xl rounded-3xl max-w-lg w-full p-8"
+    >
+      <div className="text-center space-y-4">
+        <div className="flex items-center justify-center">
+          <div className="w-12 h-12 flex items-center justify-center bg-red-100 text-red-600 rounded-full">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </div>
+        </div>
+        <h2 className="text-xl font-semibold text-gray-800">
+          Missing Input
+        </h2>
+        <p className="text-sm text-gray-600">
+          Please enter some text to generate your questions.
+        </p>
+        <div className="pt-4">
+          <button
+            onClick={() => {
+              // Add your close logic here
+              setError(null);
+            }}
+            className="px-6 py-3 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-full font-medium shadow-lg hover:shadow-xl transition-all duration-300"
+          >
+            Try Again
+          </button>
+        </div>
+      </div>
+    </motion.div>
+  </motion.div>
+)}
+
       </AnimatePresence>
     </>
   );
 };
 
 export default QuizDialog;
-
