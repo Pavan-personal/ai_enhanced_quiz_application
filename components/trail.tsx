@@ -183,32 +183,30 @@ const QuizDialog = () => {
               <Lock className="w-8 h-8 text-white" />
             </div>
             <h3 className="text-xl font-bold mb-2">Rate Limit Exceeded</h3>
-            <p className="text-gray-600 mb-6 text-center font-semibold">
+            <p className="text-gray-600 mb-6 text-center font-normal">
               Upgrade your plan to generate unlimited questions and access
               premium features.
             </p>
             <div className="space-x-4">
               <motion.button
-                className="px-6 py-2 bg-black duration-150 border-black border text-white rounded-lg"
-                whileHover={{ background: "white", color: "black" }}
+                className="px-6 py-2 duration-150 border-black border rounded-lg"
                 whileTap={{ scale: 0.5 }}
                 onClick={(e) => {
                   e.stopPropagation();
                   // Add your upgrade navigation logic here
                 }}
               >
-                Upgrade Now
+                Upgrade plan
               </motion.button>
               <motion.button
-                className="px-6 py-2 bg-black duration-150 border-black border text-white rounded-lg"
-                whileHover={{ background: "white", color: "black" }}
+                className="px-6 py-2 duration-150 bg-black border-black border text-white rounded-lg"
                 whileTap={{ scale: 0.95 }}
                 onClick={(e) => {
                   e.stopPropagation();
                   // Add your register navigation logic here
                 }}
               >
-                Register
+                Register now
               </motion.button>
             </div>
           </div>
@@ -267,32 +265,6 @@ const QuizDialog = () => {
                 </h3>
                 <div className="space-y-3">
                   {questions[currentQuestion].options.map((option, index) => (
-                    // <motion.button
-                    //   key={index}
-                    //   className={`w-full p-4 text-left h-fit rounded-lg border-2 transition-all flex items-center space-x-3
-                    //     ${
-                    //       selectedAnswers[currentQuestion] === index
-                    //         ? "border-black bg-slate-50"
-                    //         : "border-gray-200 hover:border-purple-200"
-                    //     }`}
-                    //   whileHover={{ scale: 1.01 }}
-                    //   whileTap={{ scale: 0.99 }}
-                    //   onClick={() => handleAnswerSelect(index)}
-                    // >
-                    //   <div
-                    //     className={`w-6 h-6 absolute rounded-full flex items-center justify-center
-                    //     ${
-                    //       selectedAnswers[currentQuestion] === index
-                    //         ? "bg-black text-white"
-                    //         : "bg-gray-100"
-                    //     }`}
-                    //   >
-                    //     {selectedAnswers[currentQuestion] === index && (
-                    //       <Check className="w-4 h-4 text-white" />
-                    //     )}
-                    //   </div>
-                    //   <span className="">{option}</span>
-                    // </motion.button>
                     <motion.button
                       key={index}
                       className={`w-full p-4 text-left h-fit rounded-lg border-2 transition-all flex items-center space-x-3
@@ -404,27 +376,6 @@ const QuizDialog = () => {
         )}
         {error?.error === "Rate limit exceeded. Please register to continue." &&
           renderRateLimitError()}{" "}
-        {/* {error?.error === "Please enter some text to generate questions." && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50"
-          >
-            <motion.div
-              initial={{ y: 50, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: 50, opacity: 0 }}
-              className="bg-white rounded-xl max-w-2xl w-full p-6"
-            >
-              <div className="mb-6">
-                <p className="text-sm text-gray-600 mt-2">
-                  Please enter some text to generate questions.
-                </p>
-              </div>
-            </motion.div>
-          </motion.div>
-        )} */}
         {error?.error === "Please enter some text to generate questions." && (
   <motion.div
     initial={{ opacity: 0 }}

@@ -81,7 +81,6 @@ const LandingPage: React.FC = () => {
     { value: "24/7", label: "AI Support" }
   ];
 
-  // Scroll Progress
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 100,
@@ -89,19 +88,16 @@ const LandingPage: React.FC = () => {
     restDelta: 0.001
   });
 
-  // Animation Variants
   const fadeInUp = {
     initial: { opacity: 0, y: 20 },
     animate: { opacity: 1, y: 0 },
     transition: { duration: 0.6 }
   };
 
-  // Interactive Demo State
   const [demoText, setDemoText] = useState("");
 
   const [isGenerating, setIsGenerating] = useState(false);
 
-  // Background Canvas Effect
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -155,20 +151,17 @@ const LandingPage: React.FC = () => {
 
   return (
     <div className="relative min-h-screen text-white overflow-hidden">
-      {/* Background Effect */}
       <canvas
         ref={canvasRef}
         className="fixed inset-0 -z-10"
         // style={{ filter: 'blur(4px)' }}
       />
 
-      {/* Scroll Progress */}
       <motion.div
         className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-indigo-500 to-purple-500 transform origin-left z-50"
         style={{ scaleX }}
       />
 
-      {/* Navigation */}
       <nav className="fixed w-full py-4 z-40 bg-black/50 backdrop-blur-md">
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
@@ -206,9 +199,7 @@ const LandingPage: React.FC = () => {
         </div>
       </nav>
 
-      {/* Main Content */}
       <main className="container mx-auto px-6 pt-32">
-        {/* Hero Section */}
         <div className="text-center max-w-4xl mx-auto mb-20">
           <motion.h1
             className="text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"
