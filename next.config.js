@@ -1,7 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {
-    serverComponentsExternalPackages: ['pdf2json'],
+    serverComponentsExternalPackages: ["pdf2json"],
+    images: {
+      domains: ["cdn-icons-png.flaticon.com"],
+    },
   },
 };
 

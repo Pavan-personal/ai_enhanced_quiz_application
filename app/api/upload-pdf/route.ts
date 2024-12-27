@@ -10,14 +10,14 @@ type ChunkedResponse = {
   totalChunks: number;
   currentChunk: number;
   chunkSize: number;
-}
+};
 
 export async function POST(req: NextRequest) {
   const formData: FormData = await req.formData();
   const uploadedFiles = formData.getAll("filepond");
   const CHUNK_SIZE = 100000; // 100KB chunks
   const pageNumber = parseInt(formData.get("page")?.toString() || "1");
-  
+
   let fileName = "";
   let parsedText = "";
 
@@ -47,27 +47,24 @@ export async function POST(req: NextRequest) {
 
       await fs.unlink(tempFilePath);
 
-      // Split text into chunks
       const textChunks = [];
       for (let i = 0; i < parsedText.length; i += CHUNK_SIZE) {
         textChunks.push(parsedText.slice(i, i + CHUNK_SIZE));
       }
 
-      // Return specific chunk based on page number
       const response: ChunkedResponse = {
         fileName,
         textChunk: textChunks[pageNumber - 1] || "",
         totalChunks: textChunks.length,
         currentChunk: pageNumber,
-        chunkSize: CHUNK_SIZE
+        chunkSize: CHUNK_SIZE,
       };
-
       return NextResponse.json(response);
     }
   }
 
   return NextResponse.json({
-    error: "No files found or invalid file format"
+    error: "No files found or invalid file format",
   });
 }
 
