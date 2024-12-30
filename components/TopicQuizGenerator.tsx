@@ -3,6 +3,7 @@ import CustomizationPanelTopicBased from "./CustomisationPanelTopic";
 import { TextField } from "@mui/material";
 import { motion, AnimatePresence } from "framer-motion";
 import { Loader2, Search, Send, X } from "lucide-react";
+import QuizPDFButton from "./QuizPDFButton";
 
 const TopicQuizGenerator = () => {
   const [keyword, setKeyword] = useState("");
@@ -10,6 +11,11 @@ const TopicQuizGenerator = () => {
   const [selectedTopics, setSelectedTopics] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loadingText, setLoadingText] = useState("");
+  const [prompt, setPrompt] = useState("");
+  const [Questions, setQuestions] = useState({
+    is_loaded: false,
+    questions: [],
+  });
 
   const handleSearch = async () => {
     setLoading(true);
@@ -36,10 +42,15 @@ const TopicQuizGenerator = () => {
           topics: selectedTopics,
           ...settings,
           questionType: settings.questionType,
+          prompt,
         }),
       });
       const data = await response.json();
       console.log(data);
+      setQuestions({
+        is_loaded: true,
+        questions: data.questions,
+      });
     } catch (error) {
       console.error(error);
     }
@@ -61,6 +72,7 @@ const TopicQuizGenerator = () => {
       return () => clearInterval(interval);
     }
   }, [loading]);
+
   const [isCustomizationOpen, setIsCustomizationOpen] = useState(false);
   const [settings, setSettings] = useState<Settings>({
     difficulty: "medium",
@@ -152,32 +164,48 @@ const TopicQuizGenerator = () => {
       </div>
 
       {selectedTopics.length > 0 && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="space-y-6"
-        >
-          <motion.button
-            onClick={generateQuestions}
-            disabled={loading}
-            className="w-full py-4 bg-black text-white rounded-xl flex items-center justify-center space-x-2"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-          >
-            {loading ? (
-              <>
-                <Loader2 className="w-5 h-5 animate-spin" />
-                <span>{loadingText}</span>
-              </>
-            ) : (
-              <>
-                <Send className="w-5 h-5" />
-                <span>Generate Quiz</span>
-              </>
-            )}
-          </motion.button>
-        </motion.div>
+        <div className="p-2 space-y-4">
+          <textarea
+            className="w-full p-4 border border-gray-300 text-black rounded-xl"
+            value={prompt}
+            placeholder="Want to add any additional prompts"
+            onChange={(e) => setPrompt(e.target.value)}
+          />
+        </div>
       )}
+
+      {selectedTopics.length > 0 &&
+        (Questions.is_loaded ? (
+          <QuizPDFButton questions={Questions.questions} />
+        ) : (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="space-y-6"
+          >
+            <motion.button
+              onClick={generateQuestions}
+              disabled={loading}
+              className="w-full py-4 bg-black text-white rounded-xl flex items-center justify-center space-x-2"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              {loading ? (
+                <>
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                  <span>{loadingText}</span>
+                </>
+              ) : (
+                <>
+                  <Send className="w-5 h-5" />
+                  <span>Generate Quiz</span>
+                </>
+              )}
+            </motion.button>
+          </motion.div>
+        ))}
+
+      {}
     </motion.div>
   );
 };

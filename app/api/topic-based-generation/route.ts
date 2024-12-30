@@ -8,6 +8,7 @@ export async function POST(req: Request) {
       difficulty,
       numQuestions,
       questionTypes = "mcq",
+      prompt,
     } = await req.json();
 
     if (!command || !topics || !Array.isArray(topics)) {
@@ -32,7 +33,9 @@ export async function POST(req: Request) {
         ? "cover all kind of difficluty types includeing miscellaneous"
         : difficulty
     }. Single correct answer Format is {type: 'mcq or fill-in-blank or assertion-reason t/f', question: 'string', answer: 'index of correct option', options: ['string', 'string', 'string', 'string']}. 
-    Fill in the Gap (Option-Based) Format is {type: 'string', question: 'string', answer: 'index of correct option', options: ['string', 'string', 'string', 'string']}. Assertion-Reasoning Format is {type: 'string', question: 'string', answer: 'index of correct option', options: ['string', 'string', 'string', 'string'], statment: 'string', reason: 'string'}.`;
+    Fill in the Gap (Option-Based) Format is {type: 'string', question: 'string', answer: 'index of correct option', options: ['string', 'string', 'string', 'string']}. Assertion-Reasoning Format is {type: 'string', question: 'string', answer: 'index of correct option', options: ['string', 'string', 'string', 'string'], statment: 'string', reason: 'string'}. ${
+      prompt ? "additional instructions: " + prompt : null
+    }.`;
     const contents = [{ parts: [{ text: customCommand }] }];
 
     const API_KEY = process.env.GEMINI_API_KEY;

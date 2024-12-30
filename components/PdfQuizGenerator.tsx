@@ -4,14 +4,18 @@ import { FilePond } from "react-filepond";
 import { Loader2, Send } from "lucide-react";
 import CustomizationPanelPdfBased from "./CustomisationPanelTopic";
 import { Dialog } from "@mui/material";
+import QuizPDFButton from "./QuizPDFButton";
 
 const PDFQuizGenerator = () => {
   const [serverResponse, setServerResponse] = useState("");
   const [loading, setLoading] = useState(false);
-  const [questions, setQuestions] = useState(null);
   const [openPromptModal, setOpenPromptModal] = useState(false);
   const [prompt, setPrompt] = useState("");
   const [loadingText, setLoadingText] = useState("");
+  const [Questions, setQuestions] = useState({
+    is_loaded: false,
+    questions: [],
+  });
 
   const handleGenerateQuiz = async () => {
     setLoading(true);
@@ -36,7 +40,10 @@ const PDFQuizGenerator = () => {
         }),
       });
       const data = await response.json();
-      setQuestions(data?.formattedJson);
+      setQuestions({
+        is_loaded: true,
+        questions: data.data,
+      });
     } catch (error) {
       console.error(error);
     }
@@ -104,52 +111,33 @@ const PDFQuizGenerator = () => {
         </div>
       )}
 
-      {serverResponse && (
-        <motion.button
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          onClick={() => {
-            handleGenerateQuiz();
-          }}
-          className="w-full py-4 flex items-center justify-center space-x-2 rounded-xl bg-black text-white"
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-        >
-          {loading ? (
-            <>
-              <Loader2 className="w-5 h-5 animate-spin" />
-              <span>{loadingText}</span>
-            </>
-          ) : (
-            <>
-              <Send className="w-5 h-5" />
-              <span>Generate Quiz</span>
-            </>
-          )}
-        </motion.button>
-      )}
-      {/* {serverResponse ? (
-        loading ? (
-          <>
-            <Loader2 className="w-5 h-5 animate-spin" />
-          </>
+      {serverResponse &&
+        (Questions.is_loaded ? (
+          <QuizPDFButton questions={Questions.questions} />
         ) : (
-          <>
-            <Send className="w-5 h-5" />
-            <span>Generate Quiz</span>
-          </>
-        )
-      ) : null} */}
-
-      {questions && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="space-y-4"
-        >
-          {/* Render questions here */}
-        </motion.div>
-      )}
+          <motion.button
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            onClick={() => {
+              handleGenerateQuiz();
+            }}
+            className="w-full py-4 flex items-center justify-center space-x-2 rounded-xl bg-black text-white"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            {loading ? (
+              <>
+                <Loader2 className="w-5 h-5 animate-spin" />
+                <span>{loadingText}</span>
+              </>
+            ) : (
+              <>
+                <Send className="w-5 h-5" />
+                <span>Generate Quiz</span>
+              </>
+            )}
+          </motion.button>
+        ))}
     </motion.div>
   );
 };
