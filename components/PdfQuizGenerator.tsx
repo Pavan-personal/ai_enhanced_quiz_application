@@ -4,7 +4,8 @@ import { FilePond } from "react-filepond";
 import { Loader2, Send } from "lucide-react";
 import CustomizationPanelPdfBased from "./CustomisationPanelTopic";
 import { Dialog } from "@mui/material";
-import QuizPDFButton from "./QuizPDFButton";
+import EnhancedQuiz from "./EnhancedQuiz";
+// import QuizPDFButton from "./QuizPDFButton";
 
 const PDFQuizGenerator = () => {
   const [serverResponse, setServerResponse] = useState("");
@@ -113,7 +114,8 @@ const PDFQuizGenerator = () => {
 
       {serverResponse &&
         (Questions.is_loaded ? (
-          <QuizPDFButton questions={Questions.questions} />
+          //   <QuizPDFButton questions={Questions.questions} />
+          <EnhancedQuiz questions={Questions.questions} />
         ) : (
           <motion.button
             initial={{ opacity: 0 }}

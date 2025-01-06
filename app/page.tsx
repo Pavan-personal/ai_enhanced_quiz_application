@@ -1,9 +1,22 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from 'react';
-import { motion, useScroll, useSpring } from 'framer-motion';
-import { Brain, FileText, Settings, Sparkles, ArrowRight, Book, Target, Zap, Users, Globe, Lightbulb, Cpu } from 'lucide-react';
-import QuizDialog from '@/components/trail';
+import React, { useEffect, useRef, useState } from "react";
+import { motion, useScroll, useSpring } from "framer-motion";
+import {
+  Brain,
+  FileText,
+  Settings,
+  Sparkles,
+  ArrowRight,
+  Book,
+  Target,
+  Zap,
+  Users,
+  Globe,
+  Lightbulb,
+  Cpu,
+} from "lucide-react";
+import QuizDialog from "@/components/trail";
 
 const LandingPage: React.FC = () => {
   // Sample Data
@@ -11,87 +24,107 @@ const LandingPage: React.FC = () => {
     {
       icon: Brain,
       title: "Neural Learning Engine",
-      description: "Advanced AI algorithms adapt to your unique cognitive patterns",
-      gradient: "from-blue-600 to-indigo-600"
+      description:
+        "Advanced AI algorithms adapt to your unique cognitive patterns",
+      gradient: "from-blue-600 to-indigo-600",
     },
     {
       icon: Target,
       title: "Precision Targeting",
       description: "Generate questions that focus on your knowledge gaps",
-      gradient: "from-indigo-600 to-purple-600"
+      gradient: "from-indigo-600 to-purple-600",
     },
     {
       icon: Cpu,
       title: "AI Processing",
-      description: "Process complex documents in seconds with our neural engine",
-      gradient: "from-purple-600 to-pink-600"
+      description:
+        "Process complex documents in seconds with our neural engine",
+      gradient: "from-purple-600 to-pink-600",
     },
     {
       icon: Sparkles,
       title: "Smart Generation",
       description: "Create engaging quizzes from any topic instantly",
-      gradient: "from-pink-600 to-red-600"
-    }
+      gradient: "from-pink-600 to-red-600",
+    },
   ];
 
   const testimonials: Testimonial[] = [
     {
-      quote: "This platform revolutionized how I prepare for exams. The AI-generated questions are incredibly relevant.",
+      quote:
+        "This platform revolutionized how I prepare for exams. The AI-generated questions are incredibly relevant.",
       author: "Yaswanth Baratam",
       role: "CS Student",
-      image: "/api/placeholder/50/50"
+      image: "/api/placeholder/50/50",
     },
     {
-      quote: "As a professor, this tool saves me hours of quiz preparation time while maintaining quality.",
+      quote:
+        "As a professor, this tool saves me hours of quiz preparation time while maintaining quality.",
       author: "Dr. James Wilson",
       role: "University Professor",
-      image: "/api/placeholder/50/50"
+      image: "/api/placeholder/50/50",
     },
     {
-      quote: "The adaptive learning system helped me identify and fill knowledge gaps effectively.",
+      quote:
+        "The adaptive learning system helped me identify and fill knowledge gaps effectively.",
       author: "Dhanunjay Burada",
       role: "Software Engineer",
-      image: "/api/placeholder/50/50"
-    }
+      image: "/api/placeholder/50/50",
+    },
   ];
 
   const pricing: PricingTier[] = [
     {
       name: "Starter",
       price: "Free",
-      features: ["5 Quizzes/month", "Basic AI Generation", "PDF Upload", "Standard Support"]
+      features: [
+        "5 Quizzes/month",
+        "Basic AI Generation",
+        "PDF Upload",
+        "Standard Support",
+      ],
     },
     {
       name: "Pro (Recommended)",
       price: "$29/mo",
-      features: ["Unlimited Quizzes", "Advanced AI", "Priority Support", "Analytics Dashboard"],
-      highlighted: true
+      features: [
+        "Unlimited Quizzes",
+        "Advanced AI",
+        "Priority Support",
+        "Analytics Dashboard",
+      ],
+      highlighted: true,
     },
     {
       name: "Enterprise",
       price: "Custom",
-      features: ["Custom Integration", "Dedicated Support", "API Access", "Custom Branding"]
-    }
+      features: [
+        "Custom Integration",
+        "Dedicated Support",
+        "API Access",
+        "Custom Branding",
+      ],
+    },
   ];
 
   const stats = [
     { value: "500K+", label: "Active Users" },
     { value: "1M+", label: "Quizzes Generated" },
     { value: "98%", label: "Success Rate" },
-    { value: "24/7", label: "AI Support" }
+    { value: "24/7", label: "AI Support" },
   ];
 
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 100,
     damping: 30,
-    restDelta: 0.001
+    restDelta: 0.001,
   });
 
   const fadeInUp = {
     initial: { opacity: 0, y: 20 },
     animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.6 }
+    transition: { duration: 0.6 },
   };
 
   const [demoText, setDemoText] = useState("");
@@ -104,7 +137,7 @@ const LandingPage: React.FC = () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
     canvas.width = window.innerWidth;
@@ -119,28 +152,30 @@ const LandingPage: React.FC = () => {
         y: Math.random() * canvas.height,
         radius: Math.random() * 2 + 1,
         speedX: (Math.random() - 0.5) * 0.5,
-        speedY: (Math.random() - 0.5) * 0.5
+        speedY: (Math.random() - 0.5) * 0.5,
       });
     }
 
     function animate() {
       requestAnimationFrame(animate);
       if (ctx) {
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+        ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
         if (canvas) {
           ctx.fillRect(0, 0, canvas.width, canvas.height);
         }
 
-        particles.forEach(particle => {
+        particles.forEach((particle) => {
           particle.x += particle.speedX;
           particle.y += particle.speedY;
 
-          if (canvas && (particle.x < 0 || particle.x > canvas.width)) particle.speedX *= -1;
-          if (canvas && (particle.y < 0 || particle.y > canvas.height)) particle.speedY *= -1;
+          if (canvas && (particle.x < 0 || particle.x > canvas.width))
+            particle.speedX *= -1;
+          if (canvas && (particle.y < 0 || particle.y > canvas.height))
+            particle.speedY *= -1;
 
           ctx.beginPath();
           ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
-          ctx.fillStyle = 'rgba(148, 0, 255, 0.1)';
+          ctx.fillStyle = "rgba(148, 0, 255, 0.1)";
           ctx.fill();
         });
       }
@@ -154,7 +189,7 @@ const LandingPage: React.FC = () => {
       <canvas
         ref={canvasRef}
         className="fixed inset-0 -z-10"
-        // style={{ filter: 'blur(4px)' }}
+        style={{ filter: "blur(4px)", height: "100vh" }}
       />
 
       <motion.div
@@ -165,18 +200,15 @@ const LandingPage: React.FC = () => {
       <nav className="fixed w-full py-4 z-40 bg-black/50 backdrop-blur-md">
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
-            <motion.div 
-              className="flex items-center space-x-2"
-              {...fadeInUp}
-            >
+            <motion.div className="flex items-center space-x-2" {...fadeInUp}>
               <Brain className="w-8 h-8 text-indigo-500" />
               <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 to-purple-500">
                 MindMesh
               </span>
             </motion.div>
-            
+
             <div className="hidden md:flex space-x-8">
-              {['Features', 'Pricing', 'About'].map((item) => (
+              {["Features", "Pricing", "About"].map((item) => (
                 <motion.button
                   key={item}
                   className="text-gray-300 hover:text-white transition-colors relative group"
@@ -212,7 +244,8 @@ const LandingPage: React.FC = () => {
             {...fadeInUp}
             transition={{ delay: 0.2 }}
           >
-            Upload content or enter topics to generate intelligent quizzes that adapt to your learning style
+            Upload content or enter topics to generate intelligent quizzes that
+            adapt to your learning style
           </motion.p>
         </div>
 
@@ -227,7 +260,9 @@ const LandingPage: React.FC = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
             >
-              <div className={`absolute inset-0 bg-gradient-to-r ${feature.gradient} opacity-0 group-hover:opacity-20 transition-opacity rounded-2xl`} />
+              <div
+                className={`absolute inset-0 bg-gradient-to-r ${feature.gradient} opacity-0 group-hover:opacity-20 transition-opacity rounded-2xl`}
+              />
               <feature.icon className="w-12 h-12 mb-4 text-indigo-500" />
               <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
               <p className="text-gray-400">{feature.description}</p>
@@ -258,14 +293,18 @@ const LandingPage: React.FC = () => {
 
         {/* Pricing */}
         <div className="mb-20">
-          <h2 className="text-4xl font-bold text-center mb-12">Pricing Plans</h2>
+          <h2 className="text-4xl font-bold text-center mb-12">
+            Pricing Plans
+          </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {pricing.map((tier, index) => (
               <motion.div
                 key={index}
                 className={`
                   relative p-6 rounded-2xl bg-gradient-to-b from-gray-900 to-black
-                  border ${tier.highlighted ? 'border-indigo-500' : 'border-gray-800'}
+                  border ${
+                    tier.highlighted ? "border-indigo-500" : "border-gray-800"
+                  }
                 `}
                 whileHover={{ scale: 1.05 }}
                 initial={{ opacity: 0, y: 20 }}
@@ -285,9 +324,11 @@ const LandingPage: React.FC = () => {
                 <motion.button
                   className={`
                     w-full py-2 rounded-lg mt-6
-                    ${tier.highlighted
-                      ? 'bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500'
-                      : 'bg-gray-800 hover:bg-gray-700'}
+                    ${
+                      tier.highlighted
+                        ? "bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500"
+                        : "bg-gray-800 hover:bg-gray-700"
+                    }
                   `}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
@@ -301,7 +342,9 @@ const LandingPage: React.FC = () => {
 
         {/* Testimonials */}
         <div className="mb-20">
-          <h2 className="text-4xl font-bold text-center mb-12">What Users Say</h2>
+          <h2 className="text-4xl font-bold text-center mb-12">
+            What Users Say
+          </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {testimonials.map((testimonial, index) => (
               <motion.div
@@ -321,7 +364,9 @@ const LandingPage: React.FC = () => {
                   />
                   <div>
                     <div className="font-semibold">{testimonial.author}</div>
-                    <div className="text-sm text-gray-400">{testimonial.role}</div>
+                    <div className="text-sm text-gray-400">
+                      {testimonial.role}
+                    </div>
                   </div>
                 </div>
               </motion.div>
@@ -331,20 +376,25 @@ const LandingPage: React.FC = () => {
 
         {/* FAQ Section */}
         <div className="max-w-3xl mx-auto mb-20">
-          <h2 className="text-4xl font-bold text-center mb-12">Frequently Asked Questions</h2>
+          <h2 className="text-4xl font-bold text-center mb-12">
+            Frequently Asked Questions
+          </h2>
           {[
             {
               question: "How does the AI quiz generation work?",
-              answer: "Our advanced AI analyzes your content or topic, identifies key concepts, and generates relevant questions. It adapts to different difficulty levels and question types."
+              answer:
+                "Our advanced AI analyzes your content or topic, identifies key concepts, and generates relevant questions. It adapts to different difficulty levels and question types.",
             },
             {
               question: "Can I customize the generated quizzes?",
-              answer: "Yes! You can modify question types, difficulty levels, and even edit individual questions to perfectly match your needs."
+              answer:
+                "Yes! You can modify question types, difficulty levels, and even edit individual questions to perfectly match your needs.",
             },
             {
               question: "What file formats are supported for upload?",
-              answer: "We currently support PDF documents. More formats will be added soon."
-            }
+              answer:
+                "We currently support PDF documents. More formats will be added soon.",
+            },
           ].map((faq, index) => (
             <motion.div
               key={index}
@@ -373,7 +423,8 @@ const LandingPage: React.FC = () => {
               Ready to Transform Your Learning?
             </h2>
             <p className="text-gray-400 mb-8">
-              Join thousands of students and educators who are already using our platform to create engaging quizzes and enhance learning.
+              Join thousands of students and educators who are already using our
+              platform to create engaging quizzes and enhance learning.
             </p>
             <motion.button
               className="px-8 py-3 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500"

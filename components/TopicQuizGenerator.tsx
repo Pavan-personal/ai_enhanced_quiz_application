@@ -3,7 +3,8 @@ import CustomizationPanelTopicBased from "./CustomisationPanelTopic";
 import { TextField } from "@mui/material";
 import { motion, AnimatePresence } from "framer-motion";
 import { Loader2, Search, Send, X } from "lucide-react";
-import QuizPDFButton from "./QuizPDFButton";
+import EnhancedQuiz from "./EnhancedQuiz";
+// import QuizPDFButton from "./QuizPDFButton";
 
 const TopicQuizGenerator = () => {
   const [keyword, setKeyword] = useState("");
@@ -176,7 +177,7 @@ const TopicQuizGenerator = () => {
 
       {selectedTopics.length > 0 &&
         (Questions.is_loaded ? (
-          <QuizPDFButton questions={Questions.questions} />
+          <EnhancedQuiz questions={Questions.questions} />
         ) : (
           <motion.div
             initial={{ opacity: 0 }}

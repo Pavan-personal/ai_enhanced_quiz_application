@@ -14,9 +14,9 @@ import {
 } from "lucide-react";
 import "filepond/dist/filepond.min.css";
 import TopicQuizGenerator from "@/components/TopicQuizGenerator";
-import PDFQuizGenerator from "@/components/PdfQuizGenerator";
 import { Sidebar, SidebarBody, SidebarLink } from "@/components/sidebar";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/avatar";
+import PDFQuizGenerator from "@/components/PdfQuizGenerator";
 
 // Mock chat history data - replace with your API call
 const chatHistory = [
