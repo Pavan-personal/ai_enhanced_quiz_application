@@ -31,10 +31,17 @@
 //       difficulty === "mixed"
 //         ? "cover all kind of difficluty types includeing miscellaneous"
 //         : difficulty
-//     }. Single correct answer Format is {type: 'mcq or fill-in-blank or assertion-reason t/f', question: 'string', answer: 'index of correct option', options: ['string', 'string', 'string', 'string']}. 
-//     Fill in the Gap (Option-Based) Format is {type: 'string', question: 'string', answer: 'index of correct option', options: ['string', 'string', 'string', 'string']}. Assertion-Reasoning Format is {type: 'string', question: 'string', answer: 'index of correct option', options: ['string', 'string', 'string', 'string'], statment: 'string', reason: 'string'}. ${
-//       prompt ? "additional instructions: " + prompt : null
-//     }.`;
+//     }. Format is same for all types {type: 'mcq or fill-in-blank or assertion-reason or t/f', question: 'string', answer: 'index of correct option', options: ['string', 'string', 'string', 'string']},but for assertion & reasoning in question it should be object with reason and statment. 
+
+//     IMPORTANT: Regarding format, if the question contains any code snippet, please ensure that the code is properly formatted and indented like question: { question: 'string', code_snippet: 'formatted string like suitable to display as a indented block in frontend' } also if option is 
+//     code snippet then it should be formatted as code snippet like options : [
+//     code_snippet: 'formatted string like suitable to display as a indented block in frontend' or 'string' if not code snippet]
+
+//      For mathematical expressions:
+//     - Use Unicode symbols where possible (×, ÷, ≤, ≥, ≠, π, ∑, ∫, √,  and as much as possible...)
+//     - Use simple Unicode superscripts (²,³) and subscripts (₁,₂) where possible
+    
+//     ${prompt ? "additional instructions: " + prompt : null}.`;
 //     const contents = [{ parts: [{ text: customCommand }] }];
 
 //     const API_KEY = process.env.GEMINI_API_KEY;
@@ -64,7 +71,7 @@
 //         { status: response.status }
 //       );
 //     }
-    
+
 //     const data = await response.json();
 //     const rawText = data?.candidates?.[0]?.content?.parts?.[0]?.text;
 
@@ -91,53 +98,7 @@
 //   }
 // }
 
-
 import { NextResponse } from "next/server";
-
-// Helper function to sanitize JSON strings
-function sanitizeJsonString(str: string): string {
-  return str
-    .replace(/\n/g, '\\n')
-    .replace(/\r/g, '\\r')
-    .replace(/\t/g, '\\t')
-    .replace(/\f/g, '\\f')
-    .replace(/\\/g, '\\\\')
-    .replace(/\$/g, '\\$')
-    .replace(/"/g, '\\"');
-}
-
-// Helper function to clean and parse Gemini response
-function parseGeminiResponse(rawText: string) {
-  try {
-    // First, try to find JSON content within markdown code blocks
-    const jsonMatch = rawText.match(/```(?:json)?\s*([\s\S]*?)\s*```/);
-    const jsonContent = jsonMatch ? jsonMatch[1] : rawText;
-
-    // Clean the content
-    const cleanedContent = jsonContent
-      .replace(/```json|```/g, '')
-      .trim()
-      .replace(/\\n/g, ' ')
-      .replace(/\s+/g, ' ');
-
-    // Parse the JSON
-    return JSON.parse(cleanedContent);
-  } catch (error) {
-    console.error("First parsing attempt failed:", error);
-    
-    // Fallback: Try to find array content directly
-    try {
-      const arrayMatch = rawText.match(/\[\s*{[\s\S]*}\s*\]/);
-      if (arrayMatch) {
-        return JSON.parse(arrayMatch[0]);
-      }
-    } catch (error) {
-      console.error("Second parsing attempt failed:", error);
-    }
-    
-    throw new Error("Failed to parse response content");
-  }
-}
 
 export async function POST(req: Request) {
   try {
@@ -147,7 +108,6 @@ export async function POST(req: Request) {
       difficulty,
       numQuestions,
       questionTypes = "mcq",
-      wantImageBased = false,
       prompt,
     } = await req.json();
 
@@ -162,13 +122,11 @@ export async function POST(req: Request) {
     }
 
     const topicsText = topics.join(", ");
-    
-    let questionTypeText = '';
-    if (wantImageBased) {
-      questionTypeText = `in a descriptive format that helps visualize the concept. Include detailed scenario-based questions that paint a mental picture.`;
-    } else {
-      questionTypeText = ` in the format of ${questionTypes}.`;
-    }
+    const questionTypeText = ` in the format of ${questionTypes}. ${
+      questionTypes.includes("mcq") && questionTypes !== "mcq"
+        ? "mcqs should always be atleast 60-65% of the total questions and others should be random "
+        : ""
+    }`;
 
     const customCommand = `Generate ${numQuestions} questions${questionTypeText} for the topics ${topicsText} with a difficulty level of ${
       difficulty === "mixed"
@@ -176,21 +134,60 @@ export async function POST(req: Request) {
         : difficulty
     }. 
     
-    IMPORTANT: Please ensure all mathematical expressions are properly escaped in the JSON response. Use Unicode symbols for mathematical operators and simple expressions. For complex mathematical expressions, use LaTeX notation with escaped characters.
+    Format requirements for different question types:
     
-    Format the response as a JSON array of objects with the following structure:
+    1. MCQ Format:
     {
-      "type": "string (mcq or fill-in-blank or assertion-reason t/f)",
-      "question": "string with properly unicode symbols",
-      "answer": number (index of correct option),
-      "options": ["string", "string", "string", "string"]
+      type: 'mcq',
+      question: { 
+        text: 'question text',
+        code?: 'formatted code with proper indentation if needed'
+      },
+      options: [
+        { text?: 'option text', code?: 'formatted code if needed' },
+        // ... more options
+      ],
+      answer: number // index of correct option
     }
-    
+
+    2. Fill in the blanks Format:
+    {
+      type: 'fill-in-blank',
+      question: {
+        text: 'question text with ___ for blanks',
+        code?: 'formatted code if needed'
+      },
+      options: ['correct answer'], // array with single correct answer
+      answer: 0
+    }
+
+    3. Assertion Reason Format:
+    {
+      type: 'assertion-reason',
+      question: {
+        assertion: 'assertion statement',
+        reason: 'reason statement',
+        code?: 'formatted code if needed'
+      },
+      options: [
+        'Both assertion and reason are true and reason is the correct explanation of assertion',
+        'Both assertion and reason are true but reason is not the correct explanation of assertion',
+        'Assertion is true but reason is false',
+        'Assertion is false but reason is true'
+      ],
+      answer: number // index of correct option
+    }
+
     For mathematical expressions:
-    - Use Unicode symbols where possible (×, ÷, ≤, ≥, ≠, π, ∑, ∫, √,  and as much as possible...)
-    - Use simple Unicode superscripts (²,³) and subscripts (₁,₂) where possible
+    - Use Unicode symbols (×, ÷, ≤, ≥, ≠, π, ∑, ∫, √) and also as many as possible.
+    - Use Unicode superscripts (²,³) and subscripts (₁,₂) kind of notations where possible
     
-    ${prompt ? "additional instructions: " + prompt : ""}.`;
+    For code snippets:
+    - Always include proper indentation
+    - Use consistent formatting
+    - Include language-specific syntax highlighting hints
+    
+    ${prompt ? "Additional instructions: " + prompt : ""}`;
 
     const contents = [{ parts: [{ text: customCommand }] }];
 
@@ -221,48 +218,24 @@ export async function POST(req: Request) {
         { status: response.status }
       );
     }
-    
+
     const data = await response.json();
     const rawText = data?.candidates?.[0]?.content?.parts?.[0]?.text;
 
-    if (!rawText) {
-      return NextResponse.json(
-        { error: "Empty response from Gemini API" },
-        { status: 500 }
-      );
-    }
-
     let questions;
     try {
-      questions = parseGeminiResponse(rawText);
-      
-      // Additional sanitization of questions
-      questions = questions.map((q: any) => ({
-        type: q.type,
-        question: sanitizeJsonString(q.question),
-        answer: Number(q.answer),
-        options: q.options.map((opt: string) => sanitizeJsonString(opt))
-      }));
+      questions = JSON.parse(rawText?.replace(/```json|```/g, "").trim());
     } catch (error: any) {
-      console.error("Raw response:", rawText);
-      console.error("Parsing error:", error);
       return NextResponse.json(
         {
           error: "Failed to parse Gemini response content.",
           details: error.message,
-          rawResponse: rawText
         },
         { status: 500 }
       );
     }
 
-    return NextResponse.json({ 
-      questions,
-      metadata: {
-        isImageBased: wantImageBased,
-        note: wantImageBased ? "Provided descriptive text-based alternatives for image-based questions" : null
-      }
-    });
+    return NextResponse.json({ questions });
   } catch (error: any) {
     console.error("Error handling request:", error);
     return NextResponse.json(

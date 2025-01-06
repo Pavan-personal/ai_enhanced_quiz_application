@@ -1,0 +1,211 @@
+import React, { useState } from "react";
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  Typography,
+  TextField,
+  Select,
+  MenuItem,
+  Paper,
+  Divider,
+} from "@mui/material";
+import { Download, ArrowRight } from "lucide-react";
+
+const CodeBlock = ({ code }: { code: string }) => (
+  <Box className="w-full my-4 rounded-lg overflow-hidden bg-gray-50 border border-gray-200">
+    <Box className="px-4 py-2 bg-gray-100 border-b border-gray-200">
+      <Typography className="text-xs text-gray-600">code snippet</Typography>
+    </Box>
+    <Box className="p-4 overflow-x-auto">
+      <pre className="text-sm font-mono whitespace-pre-wrap">{code}</pre>
+    </Box>
+  </Box>
+);
+
+const QuestionCard = ({
+  question,
+  index,
+}: {
+  question: {
+    question: any;
+    options: any;
+    answer: number;
+    type: string;
+  };
+  index: number;
+}) => {
+  const renderContent = (
+    content:
+      | string
+      | { text: string; code?: string; assertion?: string; reason?: string }
+  ) => {
+    if (typeof content === "string") return content;
+    return (
+      <>
+        {content.text && (
+          <Typography className="mb-4">{content.text}</Typography>
+        )}
+        {content.code && <CodeBlock code={content.code} />}
+        {content.assertion && (
+          <Box className="space-y-2 mb-4">
+            <Typography className="font-normal">Assertion: {content.assertion}</Typography>
+            <Typography className="font-normal mt-4">Reason: {content.reason}</Typography>
+          </Box>
+        )}
+      </>
+    );
+  };
+
+  const renderOptions = (
+    options: string | { text: string; code?: string }[],
+    type: string
+  ) => {
+    return Array.isArray(options) ? (
+      options.map((option, i) => (
+        <Box
+          key={i}
+          className={`p-4 border border-gray-200 rounded-lg mb-2 ${
+            i === question.answer ? "bg-gray-50 border-gray-300" : ""
+          }`}
+        >
+          <Typography className="flex items-start">
+            <span className="font-medium mr-2">
+              {String.fromCharCode(65 + i)}.
+            </span>
+            {typeof option === "string" ? (
+              option
+            ) : (
+              <>
+                {option.text && !option?.code && <span>{option.text}</span>}
+                {option.code && <CodeBlock code={option.code} />}
+              </>
+            )}
+          </Typography>
+        </Box>
+      ))
+    ) : (
+      <Typography>{options}</Typography>
+    );
+  };
+
+  return (
+    <Paper className="p-6 mb-6 rounded-xl border border-gray-200">
+      <Typography className="text-lg font-medium mb-2">
+        Question {index + 1} ({question.type.toUpperCase()})
+      </Typography>
+      <Box className="mb-6">{renderContent(question.question)}</Box>
+      <Box className="space-y-2">
+        {renderOptions(question.options, question.type)}
+      </Box>
+    </Paper>
+  );
+};
+
+interface QuizConfigDialogProps {
+  open: boolean;
+  onClose: () => void;
+  onSubmit: () => void;
+  mode: string;
+}
+
+const QuizConfigDialog = ({
+  open,
+  onClose,
+  onSubmit,
+  mode,
+}: QuizConfigDialogProps) => (
+  <Dialog open={open} onClose={onClose}>
+    <DialogTitle>
+      <Typography className="text-xl font-semibold">Quiz Settings</Typography>
+    </DialogTitle>
+    <DialogContent>
+      <Box className="space-y-4">
+        <Box>
+          <Typography className="mb-2">Quiz Mode</Typography>
+          <Select defaultValue={mode} className="w-full">
+            <MenuItem value="online">Online</MenuItem>
+            <MenuItem value="offline">Offline (PDF)</MenuItem>
+          </Select>
+        </Box>
+        {mode === "online" && (
+          <>
+            <Box>
+              <Typography className="mb-2">Duration (minutes)</Typography>
+              <TextField type="number" defaultValue={30} className="w-full" />
+            </Box>
+            <Box>
+              <Typography className="mb-2">Quiz Date & Time</Typography>
+              <TextField type="datetime-local" className="w-full" />
+            </Box>
+          </>
+        )}
+        <Box>
+          <Typography className="mb-2">Marks per Question</Typography>
+          <TextField type="number" defaultValue={1} className="w-full" />
+        </Box>
+        <Button
+          onClick={onSubmit}
+          className="w-full mt-4 bg-black text-white hover:bg-gray-900"
+        >
+          {mode === "offline" ? "Generate PDF" : "Schedule Quiz"}
+        </Button>
+      </Box>
+    </DialogContent>
+  </Dialog>
+);
+
+const QuizReview = ({
+  questions,
+}: {
+  questions: { question: any; options: any; answer: number; type: string }[];
+}) => {
+  const [configOpen, setConfigOpen] = useState(false);
+  const [quizMode, setQuizMode] = useState("online");
+
+  const handleProceed = () => {
+    setConfigOpen(true);
+  };
+
+  const handleConfigSubmit = () => {
+    if (quizMode === "offline") {
+      // Handle PDF generation
+      console.log("Generating PDF...");
+    } else {
+      // Handle quiz scheduling
+      console.log("Scheduling quiz...");
+    }
+    setConfigOpen(false);
+  };
+
+  return (
+    <Box className="max-w-4xl mx-auto py-8">
+      <Box className="flex justify-between items-center mb-8">
+        <Typography className="text-2xl font-semibold">Quiz Review</Typography>
+        <Button
+          onClick={handleProceed}
+          className="bg-black text-white hover:bg-gray-900"
+        >
+          Proceed <ArrowRight className="ml-2 h-4 w-4" />
+        </Button>
+      </Box>
+
+      <Box className="space-y-6">
+        {questions.map((question, index) => (
+          <QuestionCard key={index} question={question} index={index} />
+        ))}
+      </Box>
+
+      <QuizConfigDialog
+        open={configOpen}
+        onClose={() => setConfigOpen(false)}
+        onSubmit={handleConfigSubmit}
+        mode={quizMode}
+      />
+    </Box>
+  );
+};
+
+export default QuizReview;

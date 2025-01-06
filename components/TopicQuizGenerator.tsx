@@ -4,6 +4,7 @@ import { TextField } from "@mui/material";
 import { motion, AnimatePresence } from "framer-motion";
 import { Loader2, Search, Send, X } from "lucide-react";
 import EnhancedQuiz from "./EnhancedQuiz";
+import QuizReview from "./QuizReview";
 // import QuizPDFButton from "./QuizPDFButton";
 
 const TopicQuizGenerator = () => {
@@ -177,7 +178,10 @@ const TopicQuizGenerator = () => {
 
       {selectedTopics.length > 0 &&
         (Questions.is_loaded ? (
+          <>
           <EnhancedQuiz questions={Questions.questions} />
+          <QuizReview questions={Questions.questions} />
+          </>
         ) : (
           <motion.div
             initial={{ opacity: 0 }}
