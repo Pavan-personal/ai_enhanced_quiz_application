@@ -31,16 +31,16 @@
 //       difficulty === "mixed"
 //         ? "cover all kind of difficluty types includeing miscellaneous"
 //         : difficulty
-//     }. Format is same for all types {type: 'mcq or fill-in-blank or assertion-reason or t/f', question: 'string', answer: 'index of correct option', options: ['string', 'string', 'string', 'string']},but for assertion & reasoning in question it should be object with reason and statment. 
+//     }. Format is same for all types {type: 'mcq or fill-in-blank or assertion-reason or t/f', question: 'string', answer: 'index of correct option', options: ['string', 'string', 'string', 'string']},but for assertion & reasoning in question it should be object with reason and statment.
 
-//     IMPORTANT: Regarding format, if the question contains any code snippet, please ensure that the code is properly formatted and indented like question: { question: 'string', code_snippet: 'formatted string like suitable to display as a indented block in frontend' } also if option is 
+//     IMPORTANT: Regarding format, if the question contains any code snippet, please ensure that the code is properly formatted and indented like question: { question: 'string', code_snippet: 'formatted string like suitable to display as a indented block in frontend' } also if option is
 //     code snippet then it should be formatted as code snippet like options : [
 //     code_snippet: 'formatted string like suitable to display as a indented block in frontend' or 'string' if not code snippet]
 
 //      For mathematical expressions:
 //     - Use Unicode symbols where possible (×, ÷, ≤, ≥, ≠, π, ∑, ∫, √,  and as much as possible...)
 //     - Use simple Unicode superscripts (²,³) and subscripts (₁,₂) where possible
-    
+
 //     ${prompt ? "additional instructions: " + prompt : null}.`;
 //     const contents = [{ parts: [{ text: customCommand }] }];
 
@@ -103,7 +103,7 @@ import { NextResponse } from "next/server";
 export async function POST(req: Request) {
   try {
     const {
-      command,
+      keyword,
       topics,
       difficulty,
       numQuestions,
@@ -111,11 +111,11 @@ export async function POST(req: Request) {
       prompt,
     } = await req.json();
 
-    if (!command || !topics || !Array.isArray(topics)) {
+    if (!keyword || !topics || !Array.isArray(topics)) {
       return NextResponse.json(
         {
           error:
-            'Invalid request body: "command" and "topics" (array) are required.',
+            'Invalid request body: "keyword" and "topics" (array) are required.',
         },
         { status: 400 }
       );
@@ -140,8 +140,8 @@ export async function POST(req: Request) {
     {
       type: 'mcq',
       question: { 
-        text: 'question text',
-        code?: 'formatted code with proper indentation if needed'
+        text: 'only question text (don’t include code snippet here)',
+        code?: 'code block with proper indentation; the first line specifies the language (e.g., python, SQL, rust, etc.)'
       },
       options: [
         { text?: 'option text', code?: 'formatted code if needed' },
@@ -235,7 +235,7 @@ export async function POST(req: Request) {
       );
     }
 
-    return NextResponse.json({ questions });
+    return NextResponse.json({ questions, topic: `${keyword} questions` });
   } catch (error: any) {
     console.error("Error handling request:", error);
     return NextResponse.json(

@@ -17,6 +17,7 @@ const TopicQuizGenerator = () => {
   const [Questions, setQuestions] = useState({
     is_loaded: false,
     questions: [],
+    topic: "",
   });
 
   const handleSearch = async () => {
@@ -40,7 +41,7 @@ const TopicQuizGenerator = () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          command: "generate mcq questions",
+          keyword: keyword,
           topics: selectedTopics,
           ...settings,
           questionType: settings.questionType,
@@ -52,6 +53,7 @@ const TopicQuizGenerator = () => {
       setQuestions({
         is_loaded: true,
         questions: data.questions,
+        topic: data.topic,
       });
     } catch (error) {
       console.error(error);
@@ -179,8 +181,7 @@ const TopicQuizGenerator = () => {
       {selectedTopics.length > 0 &&
         (Questions.is_loaded ? (
           <>
-          <EnhancedQuiz questions={Questions.questions} />
-          <QuizReview questions={Questions.questions} />
+            <QuizReview questions={Questions.questions} />
           </>
         ) : (
           <motion.div

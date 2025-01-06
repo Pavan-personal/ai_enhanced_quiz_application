@@ -14,16 +14,22 @@ import {
 } from "@mui/material";
 import { Download, ArrowRight } from "lucide-react";
 
-const CodeBlock = ({ code }: { code: string }) => (
-  <Box className="w-full my-4 rounded-lg overflow-hidden bg-gray-50 border border-gray-200">
-    <Box className="px-4 py-2 bg-gray-100 border-b border-gray-200">
-      <Typography className="text-xs text-gray-600">code snippet</Typography>
+const CodeBlock = ({ code }: { code: string }) => {
+  const firstLine = code.split("\n")[0];
+  const codeSnippet = code.split("\n").slice(1).join("\n");
+  return (
+    <Box className="w-full my-4 rounded-lg overflow-hidden bg-gray-50 border border-gray-200">
+      <Box className="px-4 py-2 bg-gray-100 border-b border-gray-200">
+        <Typography className="text-sm text-gray-600">{firstLine}</Typography>
+      </Box>
+      <Box className="p-4 overflow-x-auto">
+        <pre className="text-sm font-mono whitespace-pre-wrap">
+          {codeSnippet}
+        </pre>
+      </Box>
     </Box>
-    <Box className="p-4 overflow-x-auto">
-      <pre className="text-sm font-mono whitespace-pre-wrap">{code}</pre>
-    </Box>
-  </Box>
-);
+  );
+};
 
 const QuestionCard = ({
   question,
@@ -51,8 +57,12 @@ const QuestionCard = ({
         {content.code && <CodeBlock code={content.code} />}
         {content.assertion && (
           <Box className="space-y-2 mb-4">
-            <Typography className="font-normal">Assertion: {content.assertion}</Typography>
-            <Typography className="font-normal mt-4">Reason: {content.reason}</Typography>
+            <Typography className="font-normal">
+              Statement: {content.assertion}
+            </Typography>
+            <Typography className="font-normal mt-4">
+              Reason: {content.reason}
+            </Typography>
           </Box>
         )}
       </>
@@ -117,7 +127,7 @@ const QuizConfigDialog = ({
   onSubmit,
   mode,
 }: QuizConfigDialogProps) => (
-  <Dialog open={open} onClose={onClose}>
+  <Dialog open={open} onClose={onClose} maxWidth="lg">
     <DialogTitle>
       <Typography className="text-xl font-semibold">Quiz Settings</Typography>
     </DialogTitle>
@@ -183,7 +193,7 @@ const QuizReview = ({
   return (
     <Box className="max-w-4xl mx-auto py-8">
       <Box className="flex justify-between items-center mb-8">
-        <Typography className="text-2xl font-semibold">Quiz Review</Typography>
+        <Typography className="text-2xl text-slate-600 font-semibold">Quiz Review</Typography>
         <Button
           onClick={handleProceed}
           className="bg-black text-white hover:bg-gray-900"
