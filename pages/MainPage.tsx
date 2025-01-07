@@ -127,9 +127,6 @@ const QuizGenerator = ({ user }: { user: User }) => {
                 }}
                 className="flex flex-col"
               >
-                {
-                    user.image
-                }
                 <span className="text-sm text-slate-300 font-medium">
                   {user?.name}
                 </span>
