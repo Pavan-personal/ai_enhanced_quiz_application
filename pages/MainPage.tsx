@@ -43,7 +43,7 @@ const QuizGenerator = ({ user }: { user: User }) => {
     },
     {
       label: "Settings",
-      href: "/",
+      href: "/dashboard",
       icon: (
         <Settings className="w-5 h-5 text-neutral-700 dark:text-neutral-200" />
       ),

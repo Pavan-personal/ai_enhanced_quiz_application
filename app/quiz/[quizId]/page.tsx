@@ -52,6 +52,18 @@ interface Quiz {
 
 export default function QuizPage() {
   const [data, setData] = useState<SessionObject | null>();
+  useEffect(() => {
+    const getData = async () => {
+      const info = await getSession();
+      setData({
+        id: info?.user?.id,
+        image: info?.user.image,
+        name: info?.user.name,
+        email: info?.user?.email,
+      });
+    };
+    getData();
+  }, []);
   const params = useParams();
   const router = useRouter();
   const [quiz, setQuiz] = useState<Quiz | null>(null);
@@ -95,6 +107,7 @@ export default function QuizPage() {
         email: info?.user?.email,
       });
     };
+    getData();
   }, []);
 
   const handleSubmit = async () => {

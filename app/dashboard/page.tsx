@@ -82,9 +82,21 @@
 //   );
 // }
 
-
 import React, { useEffect, useState } from "react";
-import { Clock, Trophy, Crown, Share2, Sparkles, Zap, Lock, ChevronRight, History, LogOut, Plus, Settings } from "lucide-react";
+import {
+  Clock,
+  Trophy,
+  Crown,
+  Share2,
+  Sparkles,
+  Zap,
+  Lock,
+  ChevronRight,
+  History,
+  LogOut,
+  Plus,
+  Settings,
+} from "lucide-react";
 import {
   Button,
   Card,
@@ -97,11 +109,12 @@ import {
   Avatar,
 } from "@mui/material";
 import { motion } from "framer-motion";
-import { SidebarBody,Sidebar,SidebarLink } from "@/components/sidebar";
+import { SidebarBody, Sidebar, SidebarLink } from "@/components/sidebar";
 import { AvatarImage } from "@/components/avatar";
 import { SignOutDialog } from "@/components/SignOutDialog";
 
 import { AvatarFallback } from "@radix-ui/react-avatar";
+import { getSession } from "next-auth/react";
 
 interface Quiz {
   id: string;
@@ -131,7 +144,13 @@ const SkeletonCard = () => (
   </Card>
 );
 
-const QuizCard = ({ quiz, type }: { quiz: Quiz | QuizAttempt; type: 'created' | 'attempted' }) => {
+const QuizCard = ({
+  quiz,
+  type,
+}: {
+  quiz: Quiz | QuizAttempt;
+  type: "created" | "attempted";
+}) => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   const copyQuizLink = async (id: string) => {
@@ -147,15 +166,17 @@ const QuizCard = ({ quiz, type }: { quiz: Quiz | QuizAttempt; type: 'created' | 
           <div className="flex justify-between items-start mb-4">
             <div>
               <Typography variant="h6" className="font-bold">
-                {type === 'created' ? (quiz as Quiz).title : (quiz as QuizAttempt).quiz.title}
+                {type === "created"
+                  ? (quiz as Quiz).title
+                  : (quiz as QuizAttempt).quiz.title}
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                {type === 'created' 
+                {type === "created"
                   ? `${(quiz as Quiz).attempts} attempts`
                   : `Score: ${(quiz as QuizAttempt).score}%`}
               </Typography>
             </div>
-            {type === 'created' && (
+            {type === "created" && (
               <Button
                 variant="outlined"
                 className="min-w-0 p-2 hover:bg-black hover:text-white"
@@ -168,7 +189,11 @@ const QuizCard = ({ quiz, type }: { quiz: Quiz | QuizAttempt; type: 'created' | 
           <div className="flex items-center gap-2 text-gray-600">
             <Clock className="h-4 w-4" />
             <Typography variant="body2">
-              {new Date(type === 'created' ? (quiz as Quiz).createdAt : (quiz as QuizAttempt).submittedAt).toLocaleDateString()}
+              {new Date(
+                type === "created"
+                  ? (quiz as Quiz).createdAt
+                  : (quiz as QuizAttempt).submittedAt
+              ).toLocaleDateString()}
             </Typography>
           </div>
         </CardContent>
@@ -200,7 +225,7 @@ const UpgradeBanner = () => (
           Upgrade Now
         </Button>
       </div>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="flex items-center gap-2">
           <Sparkles className="h-5 w-5" />
@@ -235,6 +260,20 @@ export default function DashboardPage() {
     quiz: [],
   });
 
+  const [data, setData] = useState<SessionObject | null>();
+  useEffect(() => {
+    const getData = async () => {
+      const info = await getSession();
+      setData({
+        id: info?.user?.id,
+        image: info?.user.image,
+        name: info?.user.name,
+        email: info?.user?.email,
+      });
+    };
+    getData();
+  }, []);
+
   const [attemptedQuizzes, setAttemptedQuizzes] = useState<{
     is_loaded: boolean;
     quiz: QuizAttempt[];
@@ -251,8 +290,7 @@ export default function DashboardPage() {
       label: "Start a new chat",
       href: "/",
       icon: <Plus className="w-5 h-5 text-neutral-700 dark:text-neutral-200" />,
-      onclick: () => {
-      }
+      onclick: () => {},
     },
     {
       label: "Settings",
@@ -263,12 +301,11 @@ export default function DashboardPage() {
     },
   ];
 
-
-const chatHistory = [
-  { id: 1, title: "Math Quiz Generation", date: "2024-12-25" },
-  { id: 2, title: "Science Topics", date: "2024-12-24" },
-  { id: 3, title: "History Questions", date: "2024-12-23" },
-];
+  const chatHistory = [
+    { id: 1, title: "Math Quiz Generation", date: "2024-12-25" },
+    { id: 2, title: "Science Topics", date: "2024-12-24" },
+    { id: 3, title: "History Questions", date: "2024-12-23" },
+  ];
 
   useEffect(() => {
     const fetchQuizzes = async () => {
@@ -298,8 +335,8 @@ const chatHistory = [
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
-        <Sidebar open={sidebarOpen} setOpen={setSidebarOpen}>
+    <div className="h-screen flex bg-gray-50">
+      <Sidebar open={sidebarOpen} setOpen={setSidebarOpen}>
         <SidebarBody className="flex flex-col justify-between h-full">
           <div className="space-y-8">
             <div className="space-y-2">
@@ -345,26 +382,18 @@ const chatHistory = [
 
           <div className="border-t pt-4">
             <div className="flex items-center gap-3">
-              {user?.image ? (
+              {data?.image ? (
                 <img
-                  src={user.image}
+                  src={data.image}
                   alt="user"
                   className="w-8 h-8 rounded-full"
                 />
               ) : (
-                <Avatar className="w-8 h-8">
-                  <AvatarImage
-                    src={
-                      "https://cdn-icons-png.flaticon.com/512/666/666201.png"
-                    }
-                    style={{
-                      filter: "invert(1)",
-                      background: "red",
-                      padding: "0.25rem",
-                    }}
-                  />
-                  <AvatarFallback>US</AvatarFallback>
-                </Avatar>
+                <img
+                src={"https://cdn-icons-png.flaticon.com/512/666/666201.png"}
+                alt="user"
+                className="w-8 h-8 rounded-full"
+              />
               )}
               <motion.div
                 animate={{
@@ -373,9 +402,9 @@ const chatHistory = [
                 className="flex flex-col"
               >
                 <span className="text-sm text-slate-300 font-medium">
-                  {user?.name}
+                  {data?.name}
                 </span>
-                <span className="text-xs text-neutral-500">{user?.email}</span>
+                <span className="text-xs text-neutral-500">{data?.email}</span>
               </motion.div>
             </div>
             <div className="w-fit">
@@ -399,7 +428,7 @@ const chatHistory = [
           </div>
         </SidebarBody>
       </Sidebar>
-      <div className="max-w-6xl mx-auto space-y-8">
+      <div className="p-16 w-fit mx-auto bg-gray-50">
         <div className="flex items-center justify-between">
           <Typography variant="h4" component="h1" className="font-bold">
             Your Quizzes
@@ -423,8 +452,8 @@ const chatHistory = [
           </Tabs>
 
           <div className="mt-4">
-            {tabValue === 0 && (
-              !createdQuizzes.is_loaded ? (
+            {tabValue === 0 &&
+              (!createdQuizzes.is_loaded ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {[1, 2, 3, 4].map((i) => (
                     <SkeletonCard key={i} />
@@ -432,7 +461,8 @@ const chatHistory = [
                 </div>
               ) : createdQuizzes.quiz.length === 0 ? (
                 <Alert severity="info">
-                  You haven't created any quizzes yet. Start by creating your first quiz!
+                  You haven't created any quizzes yet. Start by creating your
+                  first quiz!
                 </Alert>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -440,11 +470,10 @@ const chatHistory = [
                     <QuizCard key={quiz.id} quiz={quiz} type="created" />
                   ))}
                 </div>
-              )
-            )}
+              ))}
 
-            {tabValue === 1 && (
-              !attemptedQuizzes.is_loaded ? (
+            {tabValue === 1 &&
+              (!attemptedQuizzes.is_loaded ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {[1, 2, 3, 4].map((i) => (
                     <SkeletonCard key={i} />
@@ -452,7 +481,8 @@ const chatHistory = [
                 </div>
               ) : attemptedQuizzes.quiz.length === 0 ? (
                 <Alert severity="info">
-                  You haven't attempted any quizzes yet. Find a quiz to get started!
+                  You haven't attempted any quizzes yet. Find a quiz to get
+                  started!
                 </Alert>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -460,8 +490,7 @@ const chatHistory = [
                     <QuizCard key={quiz.id} quiz={quiz} type="attempted" />
                   ))}
                 </div>
-              )
-            )}
+              ))}
           </div>
         </div>
 
