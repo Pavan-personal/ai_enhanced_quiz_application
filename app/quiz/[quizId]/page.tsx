@@ -50,13 +50,6 @@ interface Quiz {
   marksPerQuestion: number;
 }
 
-interface SessionObject {
-  id: string | null | undefined;
-  email: string | null | undefined;
-  image: string | null | undefined;
-  name: string | null | undefined;
-}
-
 export default function QuizPage() {
   const [data, setData] = useState<SessionObject | null>();
   const params = useParams();
@@ -393,9 +386,7 @@ export default function QuizPage() {
                     <Button
                       key={index}
                       variant={
-                        answers[currentQuestion] === index
-                          ? "contained"
-                          : "outlined"
+                        "outlined"
                       }
                       sx={{
                         width: "100%",

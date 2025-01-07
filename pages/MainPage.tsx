@@ -22,12 +22,10 @@ import { User } from "next-auth";
 import { signOut } from "next-auth/react";
 import { SignOutDialog } from "@/components/SignOutDialog";
 
-// Mock chat history data - replace with your API call
 const chatHistory = [
   { id: 1, title: "Math Quiz Generation", date: "2024-12-25" },
   { id: 2, title: "Science Topics", date: "2024-12-24" },
   { id: 3, title: "History Questions", date: "2024-12-23" },
-  // ... more items
 ];
 
 const QuizGenerator = ({ user }: { user: User }) => {
