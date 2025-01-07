@@ -13,6 +13,7 @@ import {
   Divider,
 } from "@mui/material";
 import { Download, ArrowRight } from "lucide-react";
+import { QuizConfigDialog } from "./QuizConfigDialog";
 
 const CodeBlock = ({ code }: { code: string }) => {
   const firstLine = code.split("\n")[0];
@@ -56,7 +57,7 @@ const QuestionCard = ({
         )}
         {content.code && <CodeBlock code={content.code} />}
         {content.assertion && (
-          <Box className="space-y-2 mb-4">
+          <Box className="space-y- mb-4">
             <Typography className="font-normal">
               Statement: {content.assertion}
             </Typography>
@@ -78,7 +79,7 @@ const QuestionCard = ({
         <Box
           key={i}
           className={`p-4 border border-gray-200 rounded-lg mb-2 ${
-            i === question.answer ? "bg-gray-50 border-gray-300" : ""
+            i === question.answer ? "bg-gray-100 border-gray-300" : ""
           }`}
         >
           <Typography className="flex items-start">
@@ -87,6 +88,8 @@ const QuestionCard = ({
             </span>
             {typeof option === "string" ? (
               option
+            ) : typeof option === "boolean" ? (
+              JSON.stringify(option).replace('"', "")
             ) : (
               <>
                 {option.text && !option?.code && <span>{option.text}</span>}
@@ -114,59 +117,6 @@ const QuestionCard = ({
   );
 };
 
-interface QuizConfigDialogProps {
-  open: boolean;
-  onClose: () => void;
-  onSubmit: () => void;
-  mode: string;
-}
-
-const QuizConfigDialog = ({
-  open,
-  onClose,
-  onSubmit,
-  mode,
-}: QuizConfigDialogProps) => (
-  <Dialog open={open} onClose={onClose} maxWidth="lg">
-    <DialogTitle>
-      <Typography className="text-xl font-semibold">Quiz Settings</Typography>
-    </DialogTitle>
-    <DialogContent>
-      <Box className="space-y-4">
-        <Box>
-          <Typography className="mb-2">Quiz Mode</Typography>
-          <Select defaultValue={mode} className="w-full">
-            <MenuItem value="online">Online</MenuItem>
-            <MenuItem value="offline">Offline (PDF)</MenuItem>
-          </Select>
-        </Box>
-        {mode === "online" && (
-          <>
-            <Box>
-              <Typography className="mb-2">Duration (minutes)</Typography>
-              <TextField type="number" defaultValue={30} className="w-full" />
-            </Box>
-            <Box>
-              <Typography className="mb-2">Quiz Date & Time</Typography>
-              <TextField type="datetime-local" className="w-full" />
-            </Box>
-          </>
-        )}
-        <Box>
-          <Typography className="mb-2">Marks per Question</Typography>
-          <TextField type="number" defaultValue={1} className="w-full" />
-        </Box>
-        <Button
-          onClick={onSubmit}
-          className="w-full mt-4 bg-black text-white hover:bg-gray-900"
-        >
-          {mode === "offline" ? "Generate PDF" : "Schedule Quiz"}
-        </Button>
-      </Box>
-    </DialogContent>
-  </Dialog>
-);
-
 const QuizReview = ({
   questions,
 }: {
@@ -193,13 +143,16 @@ const QuizReview = ({
   return (
     <Box className="max-w-4xl mx-auto py-8">
       <Box className="flex justify-between items-center mb-8">
-        <Typography className="text-2xl text-slate-600 font-semibold">Quiz Review</Typography>
-        <Button
+        <Typography className="text-2xl text-slate-600 font-semibold">
+          {/* Quiz Review */}
+          Review your questions
+        </Typography>
+        <button
           onClick={handleProceed}
-          className="bg-black text-white hover:bg-gray-900"
+          className="bg-black text-white hover:bg-gray-900 flex items-center px-4 py-2 rounded-lg"
         >
           Proceed <ArrowRight className="ml-2 h-4 w-4" />
-        </Button>
+        </button>
       </Box>
 
       <Box className="space-y-6">
@@ -207,12 +160,10 @@ const QuizReview = ({
           <QuestionCard key={index} question={question} index={index} />
         ))}
       </Box>
-
       <QuizConfigDialog
         open={configOpen}
         onClose={() => setConfigOpen(false)}
-        onSubmit={handleConfigSubmit}
-        mode={quizMode}
+        questions={questions}
       />
     </Box>
   );

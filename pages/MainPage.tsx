@@ -11,12 +11,16 @@ import {
   ChevronRight,
   LogOut,
   Settings,
+  Plus,
 } from "lucide-react";
 import "filepond/dist/filepond.min.css";
 import TopicQuizGenerator from "@/components/TopicQuizGenerator";
 import { Sidebar, SidebarBody, SidebarLink } from "@/components/sidebar";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/avatar";
 import PDFQuizGenerator from "@/components/PdfQuizGenerator";
+import { User } from "next-auth";
+import { signOut } from "next-auth/react";
+import { SignOutDialog } from "@/components/SignOutDialog";
 
 // Mock chat history data - replace with your API call
 const chatHistory = [
@@ -26,21 +30,22 @@ const chatHistory = [
   // ... more items
 ];
 
-const QuizGenerator = () => {
+const QuizGenerator = ({ user }: { user: User }) => {
   const [mode, setMode] = useState("topic");
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [SignOutDialogOpen, setSignOutDialogOpen] = useState(false);
 
   const sidebarLinks = [
     {
-      label: "Recent Chats",
-      href: "/history",
-      icon: (
-        <History className="w-5 h-5 text-neutral-700 dark:text-neutral-200" />
-      ),
+      label: "Start a new chat",
+      href: "/",
+      icon: <Plus className="w-5 h-5 text-neutral-700 dark:text-neutral-200" />,
+      onclick: () => {
+      }
     },
     {
       label: "Settings",
-      href: "/settings",
+      href: "/",
       icon: (
         <Settings className="w-5 h-5 text-neutral-700 dark:text-neutral-200" />
       ),
@@ -51,7 +56,7 @@ const QuizGenerator = () => {
     <div className="flex h-screen bg-slate-50">
       <Sidebar open={sidebarOpen} setOpen={setSidebarOpen}>
         <SidebarBody className="flex flex-col justify-between h-full">
-          <div className="space-y-8 ">
+          <div className="space-y-8">
             <div className="space-y-2">
               {sidebarLinks.map((link) => (
                 <SidebarLink key={link.label} link={link} />
@@ -84,7 +89,7 @@ const QuizGenerator = () => {
                 <SidebarLink
                   link={{
                     label: "View All",
-                    href: "/history",
+                    href: "/",
                     icon: <History className="w-4 h-4 text-neutral-500" />,
                   }}
                   className="text-sm text-neutral-500"
@@ -95,37 +100,60 @@ const QuizGenerator = () => {
 
           <div className="border-t pt-4">
             <div className="flex items-center gap-3">
-              <Avatar className="w-8 h-8">
-                <AvatarImage
-                  src={"https://cdn-icons-png.flaticon.com/512/666/666201.png"}
-                  style={{
-                    filter: "invert(1)",
-                    background: "red",
-                    padding: "0.25rem",
-                  }}
+              {user?.image ? (
+                <img
+                  src={user.image}
+                  alt="user"
+                  className="w-8 h-8 rounded-full"
                 />
-                <AvatarFallback>US</AvatarFallback>
-              </Avatar>
+              ) : (
+                <Avatar className="w-8 h-8">
+                  <AvatarImage
+                    src={
+                      "https://cdn-icons-png.flaticon.com/512/666/666201.png"
+                    }
+                    style={{
+                      filter: "invert(1)",
+                      background: "red",
+                      padding: "0.25rem",
+                    }}
+                  />
+                  <AvatarFallback>US</AvatarFallback>
+                </Avatar>
+              )}
               <motion.div
                 animate={{
                   opacity: sidebarOpen ? 1 : 0,
                 }}
                 className="flex flex-col"
               >
-                <span className="text-sm font-medium">User Name</span>
-                <span className="text-xs text-neutral-500">
-                  user@example.com
+                {
+                    user.image
+                }
+                <span className="text-sm text-slate-300 font-medium">
+                  {user?.name}
                 </span>
+                <span className="text-xs text-neutral-500">{user?.email}</span>
               </motion.div>
             </div>
-            <SidebarLink
-              link={{
-                label: "Sign Out",
-                href: "/logout",
-                icon: <LogOut className="w-4 h-4 text-neutral-500" />,
-              }}
-              className="mt-2 text-sm text-red-500"
-            />
+            <div className="w-fit">
+              <SidebarLink
+                link={{
+                  label: "Sign Out",
+                  href: "/",
+                  icon: (
+                    <LogOut
+                      onClick={() => {
+                        // signOut();
+                        setSignOutDialogOpen(true);
+                      }}
+                      className="w-8 h-8 text-neutral-500"
+                    />
+                  ),
+                }}
+                className="mt-2 text-sm text-red-500"
+              />
+            </div>
           </div>
         </SidebarBody>
       </Sidebar>
@@ -185,7 +213,10 @@ const QuizGenerator = () => {
           </motion.div>
         </motion.div>
       </div>
-
+      <SignOutDialog
+        isOpen={SignOutDialogOpen}
+        onClose={() => setSignOutDialogOpen(false)}
+      />
     </div>
   );
 };
