@@ -157,8 +157,11 @@ export async function POST(req: Request) {
         text: 'question text with ___ for blanks',
         code?: 'formatted code if needed'
       },
-      options: ['correct answer'], // array with single correct answer
-      answer: 0
+      options: [
+        { text?: 'option text'},
+        // ... more options
+      ],
+      answer: number // index of correct option
     }
 
     3. Assertion Reason Format:
@@ -175,6 +178,17 @@ export async function POST(req: Request) {
         'Assertion is true but reason is false',
         'Assertion is false but reason is true'
       ],
+      answer: number // index of correct option
+    }
+   
+    4. True/False Format:
+    {
+      type: 't/f',
+      question: {
+        text: 'question statement',
+        code?: 'formatted code if needed'
+      },
+      options: ['True', 'False'],
       answer: number // index of correct option
     }
 
