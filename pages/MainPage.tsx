@@ -38,8 +38,7 @@ const QuizGenerator = ({ user }: { user: User }) => {
       label: "Start a new chat",
       href: "/",
       icon: <Plus className="w-5 h-5 text-neutral-700 dark:text-neutral-200" />,
-      onclick: () => {
-      }
+      onclick: () => {},
     },
     {
       label: "Settings",
@@ -100,7 +99,7 @@ const QuizGenerator = ({ user }: { user: User }) => {
             <div className="flex items-center gap-3">
               {user?.image ? (
                 <img
-                  src={user.image}
+                  src={user?.image}
                   alt="user"
                   className="w-8 h-8 rounded-full"
                 />

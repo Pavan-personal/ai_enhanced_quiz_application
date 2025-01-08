@@ -119,8 +119,10 @@ const QuestionCard = ({
 
 const QuizReview = ({
   questions,
+  title,
 }: {
   questions: { question: any; options: any; answer: number; type: string }[];
+  title: string;
 }) => {
   const [configOpen, setConfigOpen] = useState(false);
   const [quizMode, setQuizMode] = useState("online");
@@ -144,7 +146,6 @@ const QuizReview = ({
     <Box className="max-w-4xl mx-auto py-8">
       <Box className="flex justify-between items-center mb-8">
         <Typography className="text-2xl text-slate-600 font-semibold">
-          {/* Quiz Review */}
           Review your questions
         </Typography>
         <button
@@ -161,6 +162,7 @@ const QuizReview = ({
         ))}
       </Box>
       <QuizConfigDialog
+        title={title ? title : "Quiz Exam"}
         open={configOpen}
         onClose={() => setConfigOpen(false)}
         questions={questions}

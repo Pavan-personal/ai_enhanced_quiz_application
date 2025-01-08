@@ -165,17 +165,34 @@ export default function QuizPage() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          bgcolor: "black",
+          bgcolor: "white",
         }}
       >
-        <LinearProgress sx={{ width: "50%" }} />
+        <LinearProgress
+          sx={{
+            width: "50%",
+            borderRadius: 2,
+            bgcolor: "grey.200",
+            "& .MuiLinearProgress-bar": {
+              bgcolor: "black",
+            },
+          }}
+        />
       </Box>
     );
   }
 
   if (error) {
     return (
-      <Container maxWidth="sm" sx={{ height: "100vh", display: "flex",justifyContent: "center", alignItems: "center" }}>
+      <Container
+        maxWidth="sm"
+        sx={{
+          height: "100vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
         <Paper sx={{ p: 4, textAlign: "center" }}>
           <AlertCircle
             size={48}
@@ -210,7 +227,6 @@ export default function QuizPage() {
 
   return (
     <Box sx={{ minHeight: "100vh", bgcolor: "#f5f5f5" }}>
-      {/* Header */}
       <Paper
         elevation={0}
         sx={{
@@ -259,7 +275,6 @@ export default function QuizPage() {
                 sx={{
                   width: 40,
                   height: 40,
-                  border: "2px solid white",
                 }}
               />
               <IconButton
@@ -274,8 +289,7 @@ export default function QuizPage() {
       </Paper>
 
       <Container maxWidth="xl" sx={{ py: 4 }}>
-        <Grid container spacing={3}>
-          {/* Question Section */}
+        <Grid container spacing={3} boxSizing={"border-box"}>
           <Grid item xs={12} md={8}>
             <Paper
               elevation={0}
@@ -335,6 +349,44 @@ export default function QuizPage() {
               <Divider sx={{ my: 2 }} />
 
               {/* Question Text */}
+              {quiz.questions[currentQuestion]?.question?.assertion && (
+                <Typography
+                  variant="body1"
+                  sx={{
+                    mb: 4,
+                    fontSize: "1.1rem",
+                    lineHeight: 1.6,
+                    color: "grey.900",
+                    display: "flex",
+                    flexFlow: "column",
+                    gap: 1,
+
+                    "& .assertion::before": {
+                      content: "'Assertion: '",
+                      fontWeight: 600,
+                    },
+                    "& .reason::before": {
+                      content: "'Reason: '",
+                      fontWeight: 600,
+                    },
+
+                    "& .assertion::before, & .reason::before": {
+                      color: "grey.600",
+                    },
+                  }}
+                >
+                  {/* {quiz.questions[currentQuestion].question.assertion}
+                  {quiz.questions[currentQuestion].question.reason} */}
+                  {/* want them with good stylingx */}
+
+                  <span className="assertion">
+                    {quiz.questions[currentQuestion].question.assertion}
+                  </span>
+                  <span className="reason">
+                    {quiz.questions[currentQuestion].question.reason}
+                  </span>
+                </Typography>
+              )}
               <Typography
                 variant="body1"
                 sx={{
@@ -348,7 +400,7 @@ export default function QuizPage() {
               </Typography>
 
               {/* Code Block if exists */}
-              {quiz.questions[currentQuestion].question.code && (
+              {quiz?.questions[currentQuestion]?.question?.code && (
                 <Box
                   sx={{
                     width: "100%",
@@ -373,7 +425,13 @@ export default function QuizPage() {
                     }}
                   >
                     <Typography variant="body2" color="text.secondary">
-                      Code Snippet
+                      {/* Code Snippet */}
+                      {/* first line in question.code */}
+                      {
+                        quiz?.questions[currentQuestion].question.code.split(
+                          "\n"
+                        )[0]
+                      }
                     </Typography>
                   </Box>
                   <Box sx={{ p: 2, overflow: "auto" }}>
@@ -386,7 +444,10 @@ export default function QuizPage() {
                         whiteSpace: "pre-wrap",
                       }}
                     >
-                      {quiz.questions[currentQuestion].question.code}
+                      {quiz.questions[currentQuestion].question.code
+                        .split("\n")
+                        .slice(1)
+                        .join("\n")}
                     </pre>
                   </Box>
                 </Box>
@@ -398,9 +459,7 @@ export default function QuizPage() {
                   (option, index) => (
                     <Button
                       key={index}
-                      variant={
-                        "outlined"
-                      }
+                      variant={"outlined"}
                       sx={{
                         width: "100%",
                         justifyContent: "flex-start",
@@ -408,14 +467,12 @@ export default function QuizPage() {
                         mb: 2,
                         p: 2.5,
                         borderRadius: 2,
+                        fontWeight:
+                          answers[currentQuestion] === index ? 600 : 400,
                         color:
                           answers[currentQuestion] === index
-                            ? "white"
-                            : "grey.900",
-                        bgcolor:
-                          answers[currentQuestion] === index
                             ? "black"
-                            : "white",
+                            : "grey.900",
                         borderColor:
                           answers[currentQuestion] === index
                             ? "black"
@@ -423,12 +480,16 @@ export default function QuizPage() {
                         "&:hover": {
                           bgcolor:
                             answers[currentQuestion] === index
-                              ? "grey.900"
-                              : "grey.50",
+                              ? "grey.100"
+                              : "grey.100",
                           borderColor:
                             answers[currentQuestion] === index
                               ? "black"
                               : "grey.400",
+                          color:
+                            answers[currentQuestion] === index
+                              ? "grey.900"
+                              : "grey.900",
                         },
                         transition: "all 0.2s ease-in-out",
                       }}
@@ -445,10 +506,6 @@ export default function QuizPage() {
                           sx={{
                             minWidth: 24,
                             fontWeight: 500,
-                            color:
-                              answers[currentQuestion] === index
-                                ? "white"
-                                : "grey.600",
                           }}
                         >
                           {String.fromCharCode(65 + index)}.
@@ -460,7 +517,11 @@ export default function QuizPage() {
                               answers[currentQuestion] === index ? 500 : 400,
                           }}
                         >
-                          {option.text}
+                          {option?.text
+                            ? option.text
+                            : typeof option === "string"
+                            ? option
+                            : ""}
                         </Typography>
                       </Box>
                     </Button>
@@ -470,23 +531,22 @@ export default function QuizPage() {
             </Paper>
           </Grid>
 
-          {/* Question Panel with updated styling */}
           <Grid item xs={12} md={4}>
             <Paper
               elevation={0}
               sx={{
                 p: 3,
-                mb: 3,
+                mb: 1,
                 borderRadius: 2,
                 border: "1px solid",
                 borderColor: "grey.200",
               }}
             >
-              <Typography variant="h6" sx={{ mb: 3, fontWeight: 500 }}>
+              <Typography variant="h6" sx={{ mb: 2, fontWeight: 500 }}>
                 Question Panel
               </Typography>
 
-              <Grid container spacing={1}>
+              <Grid container spacing={2}>
                 {quiz.questions.map((_, index) => (
                   <Grid item xs={3} key={index}>
                     <Button
@@ -495,33 +555,35 @@ export default function QuizPage() {
                         width: "100%",
                         aspectRatio: "1",
                         p: 0,
-                        borderRadius: 1.5,
-                        color: markForReview.has(index)
-                          ? "warning.main"
-                          : answers[index] !== undefined
-                          ? "success.main"
-                          : "grey.500",
+                        borderRadius: 115,
                         borderColor: markForReview.has(index)
                           ? "warning.main"
                           : answers[index] !== undefined
                           ? "success.main"
                           : "grey.300",
-                        bgcolor:
-                          currentQuestion === index ? "black" : "transparent",
+                        color: "black",
                         "&:hover": {
                           bgcolor:
                             currentQuestion === index ? "grey.900" : "grey.50",
                         },
-                        "& .MuiTypography-root": {
-                          color:
-                            currentQuestion === index
-                              ? "white"
-                              : markForReview.has(index)
-                              ? "warning.main"
-                              : answers[index] !== undefined
-                              ? "success.main"
-                              : "grey.700",
-                        },
+                      }}
+                      style={{
+                        backgroundColor:
+                          currentQuestion === index
+                            ? "black"
+                            : markForReview.has(index)
+                            ? "#ff9800"
+                            : answers[index] !== undefined
+                            ? "#4caf50"
+                            : "rgba(0, 0, 0, 0.1)",
+                        color:
+                          currentQuestion === index
+                            ? "white"
+                            : markForReview.has(index)
+                            ? "white"
+                            : answers[index] !== undefined
+                            ? "white"
+                            : "rgba(0, 0, 0, 0.7)",
                       }}
                       onClick={() => setCurrentQuestion(index)}
                     >
@@ -547,7 +609,7 @@ export default function QuizPage() {
                         sx={{
                           width: 16,
                           height: 16,
-                          bgcolor: "success.main",
+                          bgcolor: "#4caf50",
                           borderRadius: "50%",
                         }}
                       />
@@ -577,7 +639,7 @@ export default function QuizPage() {
                         sx={{
                           width: 16,
                           height: 16,
-                          bgcolor: "warning.main",
+                          bgcolor: "#ff9800",
                           borderRadius: "50%",
                         }}
                       />
@@ -586,21 +648,38 @@ export default function QuizPage() {
                       </Typography>
                     </Box>
                   </Grid>
+                  <Grid item xs={6}>
+                    <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                      <Box
+                        sx={{
+                          width: 16,
+                          height: 16,
+                          bgcolor: "black",
+                          borderRadius: "50%",
+                        }}
+                      />
+                      <Typography variant="body2" color="grey.600">
+                        Current Question
+                      </Typography>
+                    </Box>
+                  </Grid>
                 </Grid>
               </Box>
             </Paper>
 
-            {/* Submit Button */}
             <Button
               fullWidth
               variant="contained"
               sx={{
-                bgcolor: "black",
-                py: 1.5,
+                py: 1.25,
                 borderRadius: 2,
                 "&:hover": {
-                  bgcolor: "grey.900",
+                  backgroundColor: "grey.900",
                 },
+              }}
+              style={{
+                backgroundColor: "black",
+                color: "white",
               }}
               onClick={() => setConfirmSubmit(true)}
             >
@@ -610,7 +689,6 @@ export default function QuizPage() {
         </Grid>
       </Container>
 
-      {/* Submit Confirmation Dialog with updated styling */}
       <Dialog
         open={confirmSubmit}
         onClose={() => setConfirmSubmit(false)}
@@ -667,9 +745,11 @@ export default function QuizPage() {
             onClick={handleSubmit}
             variant="contained"
             sx={{
-              bgcolor: "black",
-              "&:hover": { bgcolor: "grey.900" },
               px: 3,
+            }}
+            style={{
+              backgroundColor: "black",
+              color: "white",
             }}
           >
             Submit

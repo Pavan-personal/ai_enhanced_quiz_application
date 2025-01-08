@@ -181,7 +181,7 @@ const TopicQuizGenerator = () => {
       {selectedTopics.length > 0 &&
         (Questions.is_loaded ? (
           <>
-            <QuizReview questions={Questions.questions} />
+            <QuizReview title={keyword} questions={Questions.questions} />
           </>
         ) : (
           <motion.div

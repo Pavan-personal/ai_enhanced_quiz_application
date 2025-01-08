@@ -17,7 +17,7 @@ export async function GET() {
         select: {
           id: true,
           score: true,
-          submittedAt: true,
+          submittedAt: true,       
           quiz: {
             select: {
               title: true,

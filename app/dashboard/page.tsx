@@ -115,6 +115,7 @@ import { SignOutDialog } from "@/components/SignOutDialog";
 
 import { AvatarFallback } from "@radix-ui/react-avatar";
 import { getSession } from "next-auth/react";
+import Link from "next/link";
 
 interface Quiz {
   id: string;
@@ -390,10 +391,10 @@ export default function DashboardPage() {
                 />
               ) : (
                 <img
-                src={"https://cdn-icons-png.flaticon.com/512/666/666201.png"}
-                alt="user"
-                className="w-8 h-8 rounded-full"
-              />
+                  src={"https://cdn-icons-png.flaticon.com/512/666/666201.png"}
+                  alt="user"
+                  className="w-8 h-8 rounded-full"
+                />
               )}
               <motion.div
                 animate={{
@@ -433,12 +434,14 @@ export default function DashboardPage() {
           <Typography variant="h4" component="h1" className="font-bold">
             Your Quizzes
           </Typography>
-          <Button
-            variant="contained"
-            className="bg-black hover:bg-gray-800 normal-case"
-          >
-            Create New Quiz
-          </Button>
+          <Link href="/">
+            <Button
+              variant="contained"
+              className="bg-black hover:bg-gray-800 normal-case"
+            >
+              Create New Quiz
+            </Button>
+          </Link>
         </div>
 
         <div>

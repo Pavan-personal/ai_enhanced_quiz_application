@@ -23,12 +23,14 @@ interface QuizConfigDialogProps {
   open: boolean;
   onClose: () => void;
   questions: any[]; // Your questions array type
+  title: string;
 }
 
 export function QuizConfigDialog({
   open,
   onClose,
   questions,
+  title,
 }: QuizConfigDialogProps) {
   const [mode, setMode] = useState<"online" | "offline">("online");
   const [duration, setDuration] = useState("30");
@@ -77,6 +79,7 @@ export function QuizConfigDialog({
           scheduledFor: new Date(scheduledDateTime).toISOString(),
           marksPerQuestion: parseInt(marksPerQuestion),
           questions,
+          title: title,
         }),
       });
       console.log(response);

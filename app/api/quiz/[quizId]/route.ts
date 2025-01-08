@@ -48,8 +48,8 @@ export async function GET(
     }
 
     const quiz = await prisma.quiz.findUnique({
-      where: { id: params.quizId },
-      include: { attempts: { where: { userId: session.user.id } } },
+      where: { id: params?.quizId },
+      include: { attempts: { where: { userId: session?.user?.id } } },
     });
 
     if (!quiz) {
@@ -89,14 +89,14 @@ export async function GET(
     }
 
     // Create attempt record
-    await prisma.quizAttempt.create({
-      data: {
-        quizId: quiz.id,
-        userId: session.user.id,
-        answers: {},
-        score: 0,
-      },
-    });
+    // await prisma.quizAttempt.create({
+    //   data: {
+    //     quizId: quiz.id,
+    //     userId: session.user.id,
+    //     answers: {},
+    //     score: 0,
+    //   },
+    // });
 
     // Remove answers from questions before sending
     const sanitizedQuestions = JSON.parse(JSON.stringify(quiz.questions)).map(

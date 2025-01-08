@@ -5,7 +5,7 @@ import LandingPage from '@/pages/HomePage';
 
 export default async function HomePage() {
   const session = await getSession();
-  console.log(session?.user);
+  console.log(session?.user.image);
   
   if (!session) {
     return <LandingPage />;
