@@ -122,7 +122,7 @@ export default function QuizPage() {
         }),
       });
       if (response.ok) {
-        router.push(`/quiz/${quiz.id}/result`);
+        router.push(`/dashboard`);
       }
     } catch (error) {
       console.error("Error submitting quiz:", error);
