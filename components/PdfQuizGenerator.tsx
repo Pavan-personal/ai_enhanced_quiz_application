@@ -5,6 +5,7 @@ import { Loader2, Send } from "lucide-react";
 import CustomizationPanelPdfBased from "./CustomisationPanelTopic";
 import { Dialog } from "@mui/material";
 import EnhancedQuiz from "./EnhancedQuiz";
+import QuizReview from "./QuizReview";
 // import QuizPDFButton from "./QuizPDFButton";
 
 const PDFQuizGenerator = () => {
@@ -16,6 +17,7 @@ const PDFQuizGenerator = () => {
   const [Questions, setQuestions] = useState({
     is_loaded: false,
     questions: [],
+    title: "",
   });
 
   const handleGenerateQuiz = async () => {
@@ -26,13 +28,13 @@ const PDFQuizGenerator = () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          command: `generate ${
+          command: `Generate ${
             settings?.numQuestions
           } mcq questions with a difficulty level of ${
             settings?.difficulty === "mixed"
               ? "mix of hard, medium and easy"
               : settings?.difficulty
-          } from the following text in format of {type: 'mcq or t/f or assertion or fill-in-blank',question: 'string', answer: 'string', options: ['string', 'string', 'string', 'string']}. the questions types can be ${
+          } from the following text & the questions types can be ${
             settings?.questionType === "mcq"
               ? "mcq"
               : "mcqs should be 55-65% of the total questions and others should be random. order should be random also options also should be random and tough to guess"
@@ -43,7 +45,8 @@ const PDFQuizGenerator = () => {
       const data = await response.json();
       setQuestions({
         is_loaded: true,
-        questions: data.data,
+        questions: data?.data?.questions,
+        title: data?.data?.title,
       });
     } catch (error) {
       console.error(error);
@@ -114,8 +117,10 @@ const PDFQuizGenerator = () => {
 
       {serverResponse &&
         (Questions.is_loaded ? (
-          //   <QuizPDFButton questions={Questions.questions} />
-          <EnhancedQuiz questions={Questions.questions} />
+          <QuizReview
+            title={Questions?.title !== "" ? Questions.title : "Generated Quiz"}
+            questions={Questions.questions}
+          />
         ) : (
           <motion.button
             initial={{ opacity: 0 }}

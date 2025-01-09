@@ -157,7 +157,7 @@ const QuizReview = ({
       </Box>
 
       <Box className="space-y-6">
-        {questions.map((question, index) => (
+        {questions?.map((question, index) => (
           <QuestionCard key={index} question={question} index={index} />
         ))}
       </Box>
