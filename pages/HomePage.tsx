@@ -5,37 +5,17 @@ import { motion, useScroll, useSpring } from "framer-motion";
 import { Brain, Sparkles, Target, Users, Cpu } from "lucide-react";
 import QuizDialog from "@/components/trail";
 import { AuthModal } from "@/components/AuthModal";
+import WorkflowComponent from "@/components/WorkflowStep";
+import yswnt from "../app/images/yswnt.jpeg";
+import pkimg from "../app/images/pkimg.jpg";
+import dhanu from "../app/images/dhanu.jpeg";
+import { Testimonial,
+  PricingTier,
+ } from "@/types";
+import Image from "next/image";
+
 
 const LandingPage: React.FC = () => {
-  // Sample Data
-  const features: Feature[] = [
-    {
-      icon: Brain,
-      title: "Neural Learning Engine",
-      description:
-        "Advanced AI algorithms adapt to your unique cognitive patterns",
-      gradient: "from-blue-600 to-indigo-600",
-    },
-    {
-      icon: Target,
-      title: "Precision Targeting",
-      description: "Generate questions that focus on your knowledge gaps",
-      gradient: "from-indigo-600 to-purple-600",
-    },
-    {
-      icon: Cpu,
-      title: "AI Processing",
-      description:
-        "Process complex documents in seconds with our neural engine",
-      gradient: "from-purple-600 to-pink-600",
-    },
-    {
-      icon: Sparkles,
-      title: "Smart Generation",
-      description: "Create engaging quizzes from any topic instantly",
-      gradient: "from-pink-600 to-red-600",
-    },
-  ];
 
   const testimonials: Testimonial[] = [
     {
@@ -43,21 +23,20 @@ const LandingPage: React.FC = () => {
         "This platform revolutionized how I prepare for exams. The AI-generated questions are incredibly relevant.",
       author: "Yaswanth Baratam",
       role: "CS Student",
-      image: "/api/placeholder/50/50",
+      image: yswnt,
     },
     {
-      quote:
-        "As a professor, this tool saves me hours of quiz preparation time while maintaining quality.",
-      author: "Dr. James Wilson",
-      role: "University Professor",
-      image: "/api/placeholder/50/50",
+      quote: "This is amazing work. Best usecase of AI.",
+      author: "Pavan Kumar",
+      role: "Developer",
+      image: pkimg,
     },
     {
       quote:
         "The adaptive learning system helped me identify and fill knowledge gaps effectively.",
       author: "Dhanunjay Burada",
       role: "Software Engineer",
-      image: "/api/placeholder/50/50",
+      image: dhanu,
     },
   ];
 
@@ -239,7 +218,7 @@ const LandingPage: React.FC = () => {
         </div>
 
         {/* Features Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-20">
+        {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-20">
           {features.map((feature, index) => (
             <motion.div
               key={index}
@@ -257,7 +236,9 @@ const LandingPage: React.FC = () => {
               <p className="text-gray-400">{feature.description}</p>
             </motion.div>
           ))}
-        </div>
+        </div> */}
+
+        <WorkflowComponent />
 
         {/* Stats */}
         {/* <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-20">
@@ -346,7 +327,7 @@ const LandingPage: React.FC = () => {
               >
                 <p className="text-gray-300 mb-4">"{testimonial.quote}"</p>
                 <div className="flex items-center">
-                  <img
+                  <Image
                     src={testimonial.image}
                     alt={testimonial.author}
                     className="w-10 h-10 rounded-full mr-3"
@@ -364,42 +345,7 @@ const LandingPage: React.FC = () => {
         </div>
 
         {/* FAQ Section */}
-        <div className="max-w-3xl mx-auto mb-20">
-          <h2 className="text-4xl font-bold text-center mb-12">
-            Frequently Asked Questions
-          </h2>
-          {[
-            {
-              question: "How does the AI quiz generation work?",
-              answer:
-                "Our advanced AI analyzes your content or topic, identifies key concepts, and generates relevant questions. It adapts to different difficulty levels and question types.",
-            },
-            {
-              question: "Can I customize the generated quizzes?",
-              answer:
-                "Yes! You can modify question types, difficulty levels, and even edit individual questions to perfectly match your needs.",
-            },
-            {
-              question: "What file formats are supported for upload?",
-              answer:
-                "We currently support PDF documents. More formats will be added soon.",
-            },
-          ].map((faq, index) => (
-            <motion.div
-              key={index}
-              className="mb-4"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-            >
-              <div className="bg-gray-900 rounded-xl p-6 hover:bg-gray-800 transition-colors cursor-pointer">
-                <h3 className="text-xl font-semibold mb-2">{faq.question}</h3>
-                <p className="text-gray-400">{faq.answer}</p>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+        
 
         {/* Final CTA */}
         <div className="text-center max-w-3xl mx-auto mb-20">

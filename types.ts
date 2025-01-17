@@ -1,3 +1,5 @@
+import { StaticImageData } from "next/image";
+
 interface Feature {
   icon: React.ElementType;
   title: string;
@@ -9,7 +11,7 @@ interface Testimonial {
   quote: string;
   author: string;
   role: string;
-  image: string;
+  image: StaticImageData;
 }
 
 interface PricingTier {
@@ -31,3 +33,5 @@ interface SessionObject {
   image: string | null | undefined;
   name: string | null | undefined;
 }
+
+export type { Feature, Testimonial, PricingTier, Settings, SessionObject };

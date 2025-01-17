@@ -1,6 +1,8 @@
 import { Button, Dialog, DialogContent, Typography } from "@mui/material";
 import { signIn } from "next-auth/react";
-import GoogleIcon from "@mui/icons-material/Google";
+// import GoogleIcon from "@mui/icons-material/Google";
+import GoogleIcon from '../app/images/search.png'
+import Image from "next/image";
 
 export function AuthModal({
   isOpen,
@@ -35,12 +37,20 @@ export function AuthModal({
           style={{ marginBottom: "2rem", color: "#666" }}
         >
           Unlock unlimited AI-powered quizzes and create tailored, customized quiz
-          experiences in seconds ⚡. Continue to get started!
+          experiences in seconds. Continue to get started!
         </Typography>
         <Button
           onClick={handleGoogleSignIn}
           variant="contained"
-          startIcon={<GoogleIcon />}
+          // startIcon={<GoogleIcon />}
+          startIcon= {
+            <Image 
+            src={GoogleIcon}
+            alt="Google Icon"
+            width={24}
+            height={24}
+            />
+          }
           style={{
             width: "100%",
             backgroundColor: "black",
