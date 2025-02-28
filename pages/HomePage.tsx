@@ -13,6 +13,7 @@ import { Testimonial,
   PricingTier,
  } from "@/types";
 import Image from "next/image";
+import EnhancedFAQ from "@/components/FAQ";
 
 
 const LandingPage: React.FC = () => {
@@ -200,6 +201,8 @@ const LandingPage: React.FC = () => {
       </nav>
 
       <main className="container mx-auto px-6 pt-32">
+        
+        {/* Hero Section */}
         <div className="text-center max-w-4xl mx-auto mb-20">
           <motion.h1
             className="text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"
@@ -217,48 +220,10 @@ const LandingPage: React.FC = () => {
           </motion.p>
         </div>
 
-        {/* Features Grid */}
-        {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-20">
-          {features.map((feature, index) => (
-            <motion.div
-              key={index}
-              className="relative p-6 rounded-2xl bg-gradient-to-b from-gray-900 to-black border border-gray-800 hover:border-gray-700 group"
-              whileHover={{ scale: 1.05, rotateY: 10 }}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-            >
-              <div
-                className={`absolute inset-0 bg-gradient-to-r ${feature.gradient} opacity-0 group-hover:opacity-20 transition-opacity rounded-2xl`}
-              />
-              <feature.icon className="w-12 h-12 mb-4 text-indigo-500" />
-              <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
-              <p className="text-gray-400">{feature.description}</p>
-            </motion.div>
-          ))}
-        </div> */}
-
+        {/* Workflow */}
         <WorkflowComponent />
 
-        {/* Stats */}
-        {/* <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-20">
-          {stats.map((stat, index) => (
-            <motion.div
-              key={index}
-              className="text-center"
-              initial={{ opacity: 0, scale: 0.5 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ type: "spring", delay: index * 0.1 }}
-            >
-              <div className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 to-purple-500">
-                {stat.value}
-              </div>
-              <div className="text-gray-400 mt-2">{stat.label}</div>
-            </motion.div>
-          ))}
-        </div> */}
-
+        {/* Trial */}
         <QuizDialog />
 
         {/* Pricing */}
@@ -345,7 +310,7 @@ const LandingPage: React.FC = () => {
         </div>
 
         {/* FAQ Section */}
-        
+        <EnhancedFAQ />
 
         {/* Final CTA */}
         <div className="text-center max-w-3xl mx-auto mb-20">

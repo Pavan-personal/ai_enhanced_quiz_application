@@ -209,7 +209,9 @@ export function QuizConfigDialog({
                 bgcolor: "black",
                 "&:hover": {
                   bgcolor: "grey.900",
+
                 },
+                backgroundColor: "black",
               }}
             >
               {isSubmitting ? (

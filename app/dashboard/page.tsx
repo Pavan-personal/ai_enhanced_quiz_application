@@ -1,91 +1,8 @@
 "use client";
 
-// import React, { useEffect, useState } from "react";
-// // import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-// import { Clock, Trophy, Plus, Crown, Box } from "lucide-react";
-// import {
-//   Button,
-//   Card,
-//   CardContent,
-//   CardHeader,
-//   Tab,
-//   Tabs,
-//   Typography,
-// } from "@mui/material";
-
-// interface Quiz {
-//   id: string;
-//   title: string;
-//   createdAt: string;
-//   attempts: number;
-// }
-
-// interface QuizAttempt {
-//   id: string;
-//   quiz: {
-//     title: string;
-//   };
-//   score: number;
-//   submittedAt: string;
-// }
-
-// export default function DashboardPage() {
-//   const [createdQuizzes, setCreatedQuizzes] = useState<{
-//     is_loaded: Boolean;
-//     quiz: Quiz[];
-//   }>({
-//     is_loaded: false,
-//     quiz: [],
-//   });
-//   const [attemptedQuizzes, setAttemptedQuizzes] = useState<{
-//     is_loaded: Boolean;
-//     quiz: QuizAttempt[];
-//   }>({
-//     is_loaded: false,
-//     quiz: [],
-//   });
-//   const [value, setValue] = useState("created");
-
-//   useEffect(() => {
-//     const fetchQuizzes = async () => {
-//       try {
-//         const [createdRes, attemptedRes] = await Promise.all([
-//           fetch("/api/quiz/created"),
-//           fetch("/api/quiz/attempted"),
-//         ]);
-
-//         const created = await createdRes.json();
-//         const attempted = await attemptedRes.json();
-
-//         setCreatedQuizzes({
-//           is_loaded: true,
-//           quiz: created,
-//         });
-//         setAttemptedQuizzes({ is_loaded: true, quiz: attempted });
-//       } catch (error) {
-//         console.error("Error fetching quizzes:", error);
-//       }
-//     };
-
-//     fetchQuizzes();
-//   }, []);
-
-//   return (
-//     <div className="min-h-screen bg-white">
-//       {createdQuizzes?.is_loaded && (
-//         <div>{JSON.stringify(createdQuizzes?.quiz)}</div>
-//       )}
-//       {attemptedQuizzes?.is_loaded && (
-//         <div>{JSON.stringify(attemptedQuizzes?.quiz)}</div>
-//       )}
-//     </div>
-//   );
-// }
-
 import React, { useEffect, useState } from "react";
 import {
   Clock,
-  Trophy,
   Crown,
   Share2,
   Sparkles,
@@ -110,12 +27,9 @@ import {
 } from "@mui/material";
 import { motion } from "framer-motion";
 import { SidebarBody, Sidebar, SidebarLink } from "@/components/sidebar";
-import { AvatarImage } from "@/components/avatar";
-import { SignOutDialog } from "@/components/SignOutDialog";
-
-import { AvatarFallback } from "@radix-ui/react-avatar";
 import { getSession } from "next-auth/react";
 import Link from "next/link";
+import { SessionObject } from "@/types";
 
 interface Quiz {
   id: string;
@@ -131,6 +45,9 @@ interface QuizAttempt {
   };
   score: number;
   submittedAt: string;
+  createdAt: string;
+  totalMarks: number;
+  startedAt: string;
 }
 
 const SkeletonCard = () => (
@@ -162,11 +79,21 @@ const QuizCard = ({
 
   return (
     <>
-      <Card className="w-full transition-shadow duration-200 hover:shadow-lg">
+      <Card
+        onClick={() => {
+          if (type === "created") {
+            window.location.href = `/dashboard/quiz/info/${(quiz as Quiz).id}`;
+          }
+        }}
+        className={
+          (type === "created" ? "cursor-pointer" : "") +
+          " w-full transition-shadow duration-200 hover:shadow-lg"
+        }
+      >
         <CardContent>
           <div className="flex justify-between items-start mb-4">
             <div>
-              <Typography variant="h6" className="font-bold">
+              <Typography variant="h6" className="font-bold w-72">
                 {type === "created"
                   ? (quiz as Quiz).title
                   : (quiz as QuizAttempt).quiz.title}
@@ -174,7 +101,9 @@ const QuizCard = ({
               <Typography variant="body2" color="text.secondary">
                 {type === "created"
                   ? `${(quiz as Quiz).attempts} attempts`
-                  : `Score: ${(quiz as QuizAttempt).score}%`}
+                  : `Score: ${(quiz as QuizAttempt).score}/${
+                      (quiz as QuizAttempt).totalMarks
+                    }`}
               </Typography>
             </div>
             {type === "created" && (
@@ -192,8 +121,8 @@ const QuizCard = ({
             <Typography variant="body2">
               {new Date(
                 type === "created"
-                  ? (quiz as Quiz).createdAt
-                  : (quiz as QuizAttempt).submittedAt
+                  ? (quiz as QuizAttempt).createdAt
+                  : (quiz as QuizAttempt).startedAt
               ).toLocaleDateString()}
             </Typography>
           </div>
@@ -227,20 +156,20 @@ const UpgradeBanner = () => (
         </Button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="flex items-center gap-2">
+      <div className="grid grid-cols-1 md:grid-cols-3 w-fit gap-2">
+        <div className="flex items-center w-full justify-center gap-2">
           <Sparkles className="h-5 w-5" />
           <Typography variant="body1" className="text-white">
             AI-Powered Quiz Generation
           </Typography>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center justify-center w-full gap-2">
           <Zap className="h-5 w-5" />
           <Typography variant="body1" className="text-white">
             Unlimited Quizzes
           </Typography>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center w-ull justify-center gap-2">
           <Lock className="h-5 w-5" />
           <Typography variant="body1" className="text-white">
             Advanced Analytics

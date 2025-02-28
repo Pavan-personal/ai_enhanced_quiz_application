@@ -54,6 +54,7 @@ export async function POST(req: Request) {
         quizId: quiz.id,
         score,
         answers,
+        submittedAt: new Date(),
       },
     });
 

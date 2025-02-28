@@ -17,7 +17,9 @@ export async function GET() {
         select: {
           id: true,
           score: true,
-          submittedAt: true,       
+          answers: true,
+          submittedAt: true,   
+          startedAt: true,    
           quiz: {
             select: {
               title: true,
@@ -28,8 +30,12 @@ export async function GET() {
           submittedAt: 'desc',
         },
       });
-  
-      return NextResponse.json(attempts);
+      return NextResponse.json(attempts.map(attempt => {
+        return {
+          ...attempt,
+          totalMarks: attempt.answers ? Object.keys(attempt.answers).length : 0,
+        }
+      }));
     } catch (error) {
       console.error('Error fetching attempted quizzes:', error);
       return new NextResponse('Internal error', { status: 500 });

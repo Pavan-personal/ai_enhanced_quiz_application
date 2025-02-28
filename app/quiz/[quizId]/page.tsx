@@ -50,6 +50,13 @@ interface Quiz {
   marksPerQuestion: number;
 }
 
+interface SessionObject {
+  id: string | undefined | null;
+  image: string | undefined | null;
+  name: string | undefined | null;
+  email: string | undefined | null;
+}
+
 export default function QuizPage() {
   const [data, setData] = useState<SessionObject | null>();
   useEffect(() => {
