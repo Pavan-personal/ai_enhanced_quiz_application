@@ -12,15 +12,15 @@ const nextConfig = {
       "lh3.googleusercontent.com",
       "cdn-icons-png.flaticon.com",
     ],
-    // remotePatterns: [
-    //   {
-    //     protocol: 'https',
-    //     hostname: 'lh3.googleusercontent.com',
-    //     port: '',
-    //     pathname: '/***',
-    //     search: '',
-    //   },
-    // ],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'lh3.googleusercontent.com',
+        port: '',
+        pathname: '/***',
+        search: '',
+      },
+    ],
   },
 };
 module.exports = nextConfig;

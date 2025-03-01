@@ -110,7 +110,10 @@ const QuizCard = ({
               <Button
                 variant="outlined"
                 className="min-w-0 p-2 hover:bg-black hover:text-white"
-                onClick={() => copyQuizLink(quiz.id)}
+                onClick={(e) => {
+                  e.preventDefault();
+                  copyQuizLink(quiz.id);
+                }}
               >
                 <Share2 className="h-4 w-4" />
               </Button>
