@@ -20,6 +20,12 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 
+type Settings = {
+  difficulty: string;
+  numQuestions: number;
+  questionType: string;
+};
+
 const CustomizationPanelTopicBased = ({
   settings,
   setSettings,

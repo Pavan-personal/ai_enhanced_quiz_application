@@ -8,6 +8,12 @@ import EnhancedQuiz from "./EnhancedQuiz";
 import QuizReview from "./QuizReview";
 // import QuizPDFButton from "./QuizPDFButton";
 
+type Settings = {
+  difficulty: string;
+  numQuestions: number;
+  questionType: string;
+};
+
 const PDFQuizGenerator = () => {
   const [serverResponse, setServerResponse] = useState("");
   const [loading, setLoading] = useState(false);

@@ -7,6 +7,12 @@ import EnhancedQuiz from "./EnhancedQuiz";
 import QuizReview from "./QuizReview";
 // import QuizPDFButton from "./QuizPDFButton";
 
+type Settings = {
+  difficulty: string;
+  numQuestions: number;
+  questionType: string;
+};
+
 const TopicQuizGenerator = () => {
   const [keyword, setKeyword] = useState("");
   const [topics, setTopics] = useState([]);

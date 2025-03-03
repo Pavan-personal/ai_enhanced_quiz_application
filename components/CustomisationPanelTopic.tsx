@@ -20,6 +20,12 @@ import {
 import { useEffect, useState } from "react";
 import { QUESTION_TYPE_OPTIONS } from "../constants/constants";
 
+type Settings = {
+  difficulty: string;
+  numQuestions: number;
+  questionType: string;
+};
+
 const CustomizationPanelPdfBased = ({
   settings,
   setSettings,
