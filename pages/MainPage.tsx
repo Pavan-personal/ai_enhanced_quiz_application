@@ -67,7 +67,7 @@ const QuizGenerator = ({ user }: { user: User }) => {
                 }}
                 className="text-sm font-medium text-neutral-500"
               >
-                Recent Chats
+                Recently created
               </motion.div>
               <div className="space-y-2">
                 {chatHistory.slice(0, 5).map((chat) => (
