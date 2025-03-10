@@ -1,7 +1,7 @@
-import { redirect } from 'next/navigation';
-import QuizGenerator from '@/pages/MainPage';
-import { getSession } from '@/lib/auth';
-import LandingPage from '@/pages/HomePage';
+import { redirect } from "next/navigation";
+import QuizGenerator from "@/pages/MainPage";
+import { getSession } from "@/lib/auth";
+import LandingPage from "@/pages/HomePage";
 
 export default async function HomePage() {
   const session = await getSession();
